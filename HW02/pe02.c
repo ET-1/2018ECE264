@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <time.h>
 #include "pe02.h"
+#include <math.h>
+#include <limits.h>
 #define RANGE 1000000
 
 void cleanup(FILE * fpin, FILE * fpout)
@@ -196,6 +198,15 @@ double distance2(const double * datapoint, double * centroid, int dim)
 {
   // since this is for comparison only, there is no need to call sqrt
   double sum = 0; // must initialize to zero
+  int qiter;
+  double dis = 0;
+  //creat an iteration in order to read data in array
+  for(qiter = 0; qiter < dim; qiter++)
+    {
+      dis = (datapoint[qiter] - centroid[qiter]) * (datapoint[qiter] - centroid[qiter]);//calculate one dimension distance between datapoint and centroid 
+      sum = sum + dis;//sum all dimension distances to calculate relative distance
+    }
+
   //Please complete the 
   return sum;
 }
@@ -220,6 +231,20 @@ double distance2(const double * datapoint, double * centroid, int dim)
 int closestCentroid(int kval, int dim, const double * data, double * * centroid)
 {
   int mindex = 0;
+  int qiter;
+  double distance_1 = 0;
+  double distance_3 = INT_MAX;//initialize distance_3 an infinite large value for the convinience of comparision
+  for(qiter = 0; qiter < kval; qiter++)
+  {
+    distance_1 = distance2(data, centroid[qiter], dim);//call the distance2 function to calculate distance from different centroid
+
+    if(distance_1 < distance_3)
+    {
+      distance_3 = distance_1;
+      mindex = qiter;
+    }
+    //for smaller distance, update the distance and index
+  }
   return mindex;
 }
 
