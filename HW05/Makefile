@@ -52,4 +52,3 @@ test8: pe05
 
 clean:
 	/bin/rm -f pe05.o pe05 main.o
-	/bin/rm -f input* output*
