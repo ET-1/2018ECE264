@@ -16,6 +16,13 @@ void cleanup(FILE * fpin, FILE * fpout)
 double * * allocateMemory(int nrow, int ncol)
 {
 	double * * data = NULL;
+	int i;
+	data = malloc(sizeof(double *)*nrow);//allocate memory for nrow first
+	for (i = 0; i < nrow; i ++)
+	{
+	  data[i] = malloc(sizeof(double)*ncol);//allocate ncol memeory for each row 
+	}
+	
 	//TODO: allocate memory for the data and then return the data
 	//It is this functions reponsibility to ensure that memory is allocated
 	return data;
@@ -23,10 +30,20 @@ double * * allocateMemory(int nrow, int ncol)
 
 void releaseMemory(double * * data, int nrow)
 {
-	//TODO: complete this function to release the memory of the data
+	int i;
+	for(i = 0; i < nrow; i ++)
+	{
+	  free(data[i]);//free memory for each row
+	}//TODO: complete this function to release the memory of the data
+	free(data);//free the pointer 
 	//not completing this function will lead to memory not getting free
 }
 
+
+//double * * recomputeCenter(int kval, int nval, int dim, double * * data, double * * centroid, int * cluster)
+//{
+
+//}
 // read the data, return true if success, false if fail
 bool readData(FILE * fpin, double * * data, int nval, int dim)
 {
@@ -69,9 +86,14 @@ void initialize(double * * centroid, int kval, int dim)
 		{
 			int randval = - RANGE + (rand() % (2 * RANGE));
 			centroid[kiter][diter] = randval;
+	         	#ifdef debug4
+	  		printf("initial centroid[%d][%d]: %lf\n", kiter, diter, centroid[kiter][diter]);
+	  		#endif
 		}
 	}
 }
+
+
 
 int main(int argc, char * * argv)
 {
@@ -209,8 +231,84 @@ int main(int argc, char * * argv)
 void kmean(int kval, int nval, int dim, double * * data, double * * centroid,
 		int * cluster)
 {
+  int index = 0;//TODO: complete this function
+  int qiter;
+  int niter;
+  int kiter;
+  int group = 0;
+  double sum = 0;
+  int col;
+  int count = 0;
+  int repeat = 1;
+  
+  while(repeat != 0)
+  {
+    repeat = 0;
 
-	//TODO: complete this function
+	for(qiter = 0; qiter < nval; qiter ++)
+	{
+	  index = closestCentroid(kval, dim, data[qiter], centroid);
+	  if(index != cluster[qiter])
+	  {
+	    repeat = repeat + 1;
+	  }
+	  else
+	  {
+	    repeat = repeat + 0;
+	  }
+	  cluster[qiter] = index;//assign each pointer to its group
+	  #ifdef debug1
+	  printf("cluster[%d] = %d\n", qiter, index);
+	  
+	  #endif
+	  
+	}//store the assignment of group
+        #ifdef debug5
+	printf("Total repeat is: %d \n", repeat);
+	#endif
+	
+	for(col = 0; col < dim; col ++)
+	{
+	  #ifdef debug3
+	  printf("\nThis is dimension %d\n", col);
+	  #endif
+	  for(kiter = 0; kiter < kval; kiter ++)
+	  { 
+	    count = 0;//reset count for each group
+	    sum = 0;//reset column sum for each group
+	    for(niter = 0; niter < nval; niter ++)
+	    {
+	      group = cluster[niter];//read the group number for each pointer
+	      if(group == kiter)//group number should be less than k
+	      {
+	        count = count + 1;
+	        sum = sum + data[niter][col];	        
+	      }	      
+	    }
+	    	    
+	    if(count == 0)
+	    {
+	      centroid[kiter][col] = 0;
+	    }
+	    else
+	    {
+	      centroid[kiter][col] = sum / count;
+	    }
+	    #ifdef debug2
+	    
+	    printf("centroid[%d][%d] = %lf\n", kiter, col, centroid[kiter][col]);
+	    
+	    #endif
+	  }
+	}
+//		printf("Total repeat is: %d \n", repeat);
+  }	
+
+
+	
+}
+	
+	
 	/*This assignment uses the *k-mean clustering* algorithm. This algorithm works in the following way:
 	  1. Read the data and the given value k
 	  2. Pick k points (called *centroids*) randomly as the initial centers
@@ -221,4 +319,3 @@ void kmean(int kval, int nval, int dim, double * * data, double * * centroid,
 	*/
 
 	
-}
