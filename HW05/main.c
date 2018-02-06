@@ -18,8 +18,79 @@
 
 */ 
 
-int main(int argc, char ** argv) {
+int main(int argc, char ** argv) 
+{
+	char * infile;
+	char * outfile;
+	int write = 0;
+	StudentDatabase * db = NULL;
 	
-	return EXIT_SUCCESS;
+	if(argc != 4)//argument is not 4
+	{
+	  printf("Wrong arguments\n");
+	  return EXIT_FAILURE;
+	}
+	else//argument is 4
+	{
+	  
+	  infile = argv[1];
+	  outfile = argv[3];
+	  if(strcmp(argv[2], "-a") == 0)//Sort by age mode
+	  {
+	    db = Connect(infile);
+	    if(db == NULL)//fail to read the intput file
+	    {
+	      printf("Fail to connect to db\n");
+	      return EXIT_FAILURE; 
+	    }
+	    else//read the intput file successfully
+	    {
+	      SortDatabaseByAge(db);//qsort the database	      
+	      write = WriteDatabase(outfile, db);//write the sorting data
+	      if(write == 1)//write successfully
+	      {
+	        PrintDatabase(db);//print out the sorting by age data
+	        printf("Write to db\n");
+	      }
+	      else//fail to write
+	      {
+	        printf("Fail to write to db\n");
+	      }
+	      Close(db);//free the memory
+	      return EXIT_SUCCESS;
+	    }
+	  }
+	  else if(strcmp(argv[2], "-n") == 0)//Sort by name mode (level1)
+	  {
+	    db = Connect(infile);
+	    if(db == NULL)//fail to read the intput file (level2)
+	    {
+	      printf("Fail to connect to db\n");
+	      return EXIT_FAILURE; 
+	    }//(level2)
+	    else//read the intput file successfully (level2)
+	    {
+	      SortDatabaseByName(db);//qsort the database
+	      write = WriteDatabase(outfile, db);//write the sorting data
+	      if(write == 1)//write successfully (level3)
+	      {
+	      	PrintDatabase(db);//print out the sorting by age data
+	        printf("Write to db\n");
+	      }//(level3)
+	      else//fail to write (level3)
+	      {
+	        printf("Fail to write to db\n");
+	      }//(level3)
+	      Close(db);//free the memory
+	      return EXIT_SUCCESS;
+	    }//(level2)
+	  }//(level1)
+	  else
+	  {
+	    printf("Wrong arguments\n");
+	    return EXIT_FAILURE;
+	  }
+	}
+	
 }
 
