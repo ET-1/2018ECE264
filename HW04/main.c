@@ -13,8 +13,78 @@
 	  	If argv[2] is neither "-a" nor "-s", you should print "Wrong arguments\n" and return EXIT_FAILURE
 	4. argv[3]: We only need input in argv[3] when argv[2] is equal to "-s". argv[3] is the name of the student you are looking for. If there is no such student, you should print "No this student\n". Otherwise, use PrintStudent() function to print the information of the student.
 */
-int main(int argc, char ** argv) {
-	
-	return EXIT_SUCCESS;
+int main(int argc, char ** argv) 
+{
+	char * filename;
+	char * stu_name = NULL;
+	StudentDatabase * db;
+	Student * found;
+	if (argc < 3)
+	{
+	  printf("Insufficient arguments\n");
+	  return EXIT_FAILURE;
+	  
+	}
+	else
+	{
+	  filename = argv[1];//assign filename
+	  db = Connect(filename);//read the database and assign it to db
+	  if(db == NULL)
+	  {
+	    printf("Wrong arguments\n");
+	    return EXIT_FAILURE;
+	  }
+	  else
+	  {
+	    if (strcmp(argv[2], "-a") == 0)
+	    {
+	      if(argv[3] != NULL)
+	      {
+	        printf("Wrong arguments\n");
+	        Close(db);
+	        return EXIT_FAILURE;
+	      }
+	      else
+	      {
+	        PrintDatabase(db);//print the database db
+	        Close(db);
+	        return EXIT_SUCCESS;
+	      }
+	    }
+	    else if (strcmp(argv[2], "-s") == 0)
+	    {
+	      if(argv[3] == NULL)
+	      {
+	        printf("Wrong arguments\n");
+	        Close(db);
+	        return EXIT_FAILURE;
+	      }
+	      else
+	      {
+	        stu_name = argv[3];//assign student name
+	        found = SearchByName(db, stu_name);//return result to found
+	        if(found == NULL)
+	        {
+	          printf("No this student\n");
+	          Close(db);
+	          return EXIT_SUCCESS;
+	        }
+	        else
+	        {
+	          PrintStudent(found);
+	          Close(db);
+	          return EXIT_SUCCESS;
+	        }
+	      
+	      }
+	    }
+	    else
+	    {
+	      printf("Wrong arguments\n");
+	      Close(db);
+	      return EXIT_FAILURE;
+	    }
+	  }
+	}
 }
 

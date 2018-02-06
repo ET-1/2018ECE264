@@ -11,8 +11,12 @@
  You should assume the maximum length of the string is MAX_LEN
 */
 typedef struct {
-	int id;
-	char name[MAX_LEN];
+	int id;//field one id number is integer
+	char name[MAX_LEN];//field two student name is string
+	char major[MAX_LEN];//field three major is string
+	char year[MAX_LEN];//field four year is string
+	char enrollment[MAX_LEN];//field five enrollment is string
+	int age;//field six age is integer
 } Student;
 
 /* Do not change code below this line */
