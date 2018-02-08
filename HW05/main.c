@@ -49,7 +49,7 @@ int main(int argc, char ** argv)
 	      write = WriteDatabase(outfile, db);//write the sorting data
 	      if(write == 1)//write successfully
 	      {
-	        PrintDatabase(db);//print out the sorting by age data
+	        //PrintDatabase(db);//print out the sorting by age data
 	        printf("Write to db\n");
 	      }
 	      else//fail to write
@@ -74,7 +74,7 @@ int main(int argc, char ** argv)
 	      write = WriteDatabase(outfile, db);//write the sorting data
 	      if(write == 1)//write successfully (level3)
 	      {
-	      	PrintDatabase(db);//print out the sorting by age data
+	      	//PrintDatabase(db);//print out the sorting by age data
 	        printf("Write to db\n");
 	      }//(level3)
 	      else//fail to write (level3)
