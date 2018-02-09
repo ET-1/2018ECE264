@@ -7,6 +7,7 @@
 *.obj
 *.elf
 *.txt
+*.zip
 *~
 # adding object files that will be needed by students for HW02
 !HW02/obj/kmean.o
