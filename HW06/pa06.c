@@ -394,7 +394,7 @@ void FreeExecuteResult(ExecuteResult * res)
 void WriteDb(StudentDatabase * db, SelectedField * info, ExecuteResult * execute_res, char * filename) 
 {
   FILE * fp = NULL;
-  fp = fopen(filename, "r+");
+  fp = fopen(filename, "r");
   //fseek(fp, 1, SEEK_SET);
   int num = db->number;
   if(fp == NULL)
@@ -403,6 +403,7 @@ void WriteDb(StudentDatabase * db, SelectedField * info, ExecuteResult * execute
   }
   else
   {
+    fp = freopen(filename, "w", stdout);
     for(int i = 0; i < num; i++)
     {
 
@@ -432,7 +433,7 @@ void WriteDb(StudentDatabase * db, SelectedField * info, ExecuteResult * execute
         }      
         if(info->age == true)
         {
-          fprintf(fp, "age:%d", db->students[i]->age);
+          fprintf(fp, "age:%d ", db->students[i]->age);
         }
         fputs("\n", fp);
       }
