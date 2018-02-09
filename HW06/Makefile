@@ -17,35 +17,35 @@ pa06:$(OBJS)
 testcase: test1 test2 test3 test4 test5 test6 test7 test8
 
 test1: pa06
-	./pa06 SELECT name age WHERE age ">" 10 AND id = 1
+	$(VALGRIND) ./pa06 SELECT name age WHERE age ">" 10 AND id = 1
 #	diff age.txt expected/sortbyage.txt
 
 test2: pa06
-	./pa06 database.txt -a bya.txt 
+	$(VALGRIND) ./pa06 SELECT age name WHERE age ">" 10 AND id = 1
 #	diff fail.txt expected/filefail.txt
 
 test3: pa06
-	./pa06 daabase.txt -a byage.txt 
+	$(VALGRIND) ./pa06 SELECT enrollment age major WHERE age "<" 22 OR id = 100
 #	diff notconnect.txt expected/dbnotexist.txt	
 
 test4: pa06
-	./pa06 database.txt -n name.txt
-	diff name.txt expected/sortbyname.txt
+	$(VALGRIND) ./pa06 SELECT major enrollment major id WHERE major = CS AND enrollment = No AND year = Sophomore
+#	diff name.txt expected/sortbyname.txt
 
 test5: pa06
-	./pa06 database.txt -n bya.txt 
+	$(VALGRIND) ./pa06 SELECT id WHERE enrollment = Yes
 #	diff fail1.txt expected/filefail.txt
 
 test6: pa06
-	./pa06 daabase.txt -n byname.txt 
+	$(VALGRIND) ./pa06 SELECT id WHERE enrollment = Yes AND name = aa
 #	diff notconnect1.txt expected/dbnotexist.txt	
 		
 test7: pa06
-	./pa06 daabase.txt -n
+	$(VALGRIND) ./pa06 SELECT age enrollment year major name id WHERE enrollment = No
 #	diff numargc.txt expected/argcnot4.txt
 	
-test8: pa06
-	./pa06 database.txt -s byname.txt
+#test8: pa06
+	$(VALGRIND) ./pa06 SELECT age name WHERE age ">" 10 AND id = 1
 #	diff nor.txt expected/notaorn.txt
 
 

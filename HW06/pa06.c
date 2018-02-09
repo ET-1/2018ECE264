@@ -69,16 +69,16 @@ ParseResult * ParseQuery(int num, char ** query)
     {
       sel_ind = i;
     }
-    else if(strcmp(query[i], "WHERE") == 0)
+    if(strcmp(query[i], "WHERE") == 0)
     {
       con_ind = i;
     }
-    else if(strcmp(query[i], "AND") == 0)
+    if(strcmp(query[i], "AND") == 0)
     {
       con_log = 1;
       num_and ++; 
     }
-    else if(strcmp(query[i], "OR") == 0)
+    if(strcmp(query[i], "OR") == 0)
     {
       con_log = 0;
       num_or ++;
@@ -106,9 +106,12 @@ ParseResult * ParseQuery(int num, char ** query)
   field_num = con_ind - sel_ind;//Number of selected fields
   result->field = ConstructField();//Memory allocate for field object pointer
   result->conditions = malloc(sizeof(Condition *) * num_con);//Meomory allocate for conditions
-  for(int k = 0; k < num_con; k++)
+  if(num_con > 0)
   {
-    result->conditions[k] = malloc(sizeof(Condition));
+    for(int k = 0; k < num_con; k++)
+    {
+      result->conditions[k] = malloc(sizeof(Condition));
+    }
   }
   
   
@@ -266,20 +269,19 @@ ExecuteResult * ExecuteQuery(StudentDatabase * db, ParseResult * res)
 {
   //Define parameters
   ExecuteResult * exe = NULL;
-  int count = 0;
   int stu_num = db->number;
   int con_num = res->condition_num;
-  int che_and = 0;
-  int che_or = 0;
-  int loop_num = 0;
+  int che_and = -1;
+  int che_or = -1;
+  int count = 0;
+  int iter = 0;
   
   //Memoery allocate for the object
-  exe = malloc(sizeof(ExecuteResult));
-  exe->arr = malloc(sizeof(int) * stu_num);
-
   //Find all matched student's indexs
-  for(int k = 0; k < stu_num; k++)
-  {
+    exe = malloc(sizeof(ExecuteResult));
+    exe->arr = malloc(sizeof(int) * stu_num);
+    
+    
     for(int i = 0; i < stu_num; i++)//loop for students
     {
       Student * stu = db->students[i];
@@ -294,25 +296,39 @@ ExecuteResult * ExecuteQuery(StudentDatabase * db, ParseResult * res)
         {
           che_or = che_or + Compare(stu, con);
         }
-        loop_num ++;
       }
-      if(che_and == loop_num)//If meet AND logic, assign student's index
+      if(che_and == (con_num - 1))//If meet AND logic, assign student's index
       {
-        exe->arr[k] = i;
+        exe->arr[iter] = 1;
+        iter ++;
         count ++;
       }
-      else if(che_or > 0)//If meet OR logic, assign student's index
+      else if(che_and != (con_num - 1))
       {
-        exe->arr[k] = i;
+        exe->arr[iter] = 0;
+        iter ++;
+      }
+      else if(che_or > -1)//If meet OR logic, assign student's index
+      {
+        exe->arr[iter] = 1;
+        iter ++;
         count ++;
       }
-      che_and = 0;//Reset AND condition 
-      che_or = 0;//Reset OR condition
-      loop_num = 0;
+      else if(che_or == -1)
+      {
+        exe->arr[iter] = 1;
+        iter ++;
+      }
+      che_and = -1;//Reset AND condition 
+      che_or = -1;//Reset OR condition
+      //loop_num = 0;
     }
-  }
-  exe->len = count;
-  return exe;
+    //int total = k1 + k2;
+
+    exe->len = count;
+    
+    
+    return exe;
 }
 #endif
 
@@ -357,39 +373,46 @@ void WriteDb(StudentDatabase * db, SelectedField * info, ExecuteResult * execute
 {
   FILE * fp = NULL;
   fp = fopen(filename, "r+");
-  fseek(fp, 0, SEEK_SET);
+  //fseek(fp, 1, SEEK_SET);
+  int num = db->number;
   if(fp == NULL)
   {
     printf("Failed to open file\n");
   }
   else
   {
-    for(int i = 0; i < (execute_res->len); i++)
+    for(int i = 0; i < num; i++)
     {
+
       int ind = execute_res->arr[i];
-      if(info->id == true)
+      if(ind == 1)
       {
-        fprintf(fp, "id:%d ", db->students[ind]->id);
-      }
-      else if(info->name == true)
-      {
-        fprintf(fp, "\bname:%s ", db->students[ind]->name);
-      }
-      else if(info->major == true)
-      {
-        fprintf(fp, "\bmajor:%s ", db->students[ind]->major);
-      }
-      else if(info->year == true)
-      {
-        fprintf(fp, "\byear:%s ", db->students[ind]->year);
-      }
-      else if(info->enrollment == true)
-      {
-        fprintf(fp, "\benrollment:%s ", db->students[ind]->enrollment);
-      }      
-      else if(info->age == true)
-      {
-        fprintf(fp, "\bage:%d ", db->students[ind]->age);
+        //fputs(" ", fp);
+        if(info->id == true)
+        {
+          fprintf(fp, "id:%d ", db->students[i]->id);
+        }
+        if(info->name == true)
+        {
+          fprintf(fp, "name:%s ", db->students[i]->name);
+        }
+        if(info->major == true)
+        {
+          fprintf(fp, "major:%s ", db->students[i]->major);
+        }
+        if(info->year == true)
+        {
+          fprintf(fp, "year:%s ", db->students[i]->year);
+        }
+        if(info->enrollment == true)
+        {
+          fprintf(fp, "enrollment:%s ", db->students[i]->enrollment);
+        }      
+        if(info->age == true)
+        {
+          fprintf(fp, "age:%d", db->students[i]->age);
+        }
+        fputs("\n", fp);
       }
     }
     fclose(fp);

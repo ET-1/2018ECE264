@@ -16,14 +16,17 @@ int main(int argc, char **argv)
     StudentDatabase * db = NULL;
     ParseResult * res = NULL;
     ExecuteResult * exe = NULL;
-    
-    db = Connect("database.txt");
+    char  infile[] = "database.txt";
+    char  outfile[] = "output.txt";
+
+    db = Connect(infile);
+  //  PrintDatabase(db);
     res = ParseQuery(argc, argv);
     exe = ExecuteQuery(db, res);
-    WriteDb(db, res->field, exe, "output.txt");
-    Close(db);
+    WriteDb(db, res->field, exe, outfile);
     FreeParseResult(res);
     FreeExecuteResult(exe);
+    Close(db);
     return EXIT_SUCCESS;
 }
 
