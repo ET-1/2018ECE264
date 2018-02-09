@@ -98,6 +98,11 @@ ParseResult * ParseQuery(int num, char ** query)
     result->condition_num = num_or + 1;
     strcpy(result->logic, "OR");
   }
+  else
+  {
+    result->condition_num = 1;
+    //result->logic = NULL;
+  }
   num_con = result->condition_num;
   
   
@@ -275,7 +280,7 @@ ExecuteResult * ExecuteQuery(StudentDatabase * db, ParseResult * res)
   int che_or = -1;
   int count = 0;
   int iter = 0;
-  
+  int che_non = -1;
   //Memoery allocate for the object
   //Find all matched student's indexs
     exe = malloc(sizeof(ExecuteResult));
@@ -285,45 +290,62 @@ ExecuteResult * ExecuteQuery(StudentDatabase * db, ParseResult * res)
     for(int i = 0; i < stu_num; i++)//loop for students
     {
       Student * stu = db->students[i];
-      for(int j = 0; j < con_num; j++)//loop for conditions
+      if(con_num > 1)
       {
-        Condition * con = res->conditions[j];
-        if(strcmp(res->logic, "AND") == 0)
+        for(int j = 0; j < con_num; j++)//loop for conditions
         {
-          che_and = che_and + Compare(stu, con);
-        }
-        else if(strcmp(res->logic, "OR") == 0)
+          Condition * con = res->conditions[j];
+          if(strcmp(res->logic, "AND") == 0)
+          {
+            che_and = che_and + Compare(stu, con);
+          }
+          else if(strcmp(res->logic, "OR") == 0)
+          {
+            che_or = che_or + Compare(stu, con);
+          }
+        }       
+        if(che_and == (con_num - 1))//If meet AND logic, assign student's index
         {
-          che_or = che_or + Compare(stu, con);
+          exe->arr[iter] = 1;
+          iter ++;
+          count ++;
+        }
+        else if(che_and != (con_num - 1))
+        {
+          exe->arr[iter] = 0;
+          iter ++;
+        }
+        else if(che_or > -1)//If meet OR logic, assign student's index
+        {
+          exe->arr[iter] = 1;
+          iter ++;
+          count ++;
+        }
+        else if(che_or == -1)
+        {
+          exe->arr[iter] = 1;
+          iter ++;
+        }
+        che_and = -1;//Reset AND condition 
+        che_or = -1;//Reset OR condition
+      }
+      else
+      {
+        che_non = Compare(stu, res->conditions[0]);
+        if(che_non == 1)
+        {
+          exe->arr[iter] = 1;
+          iter ++;
+          count ++;
+        }
+        else
+        {
+          exe->arr[iter] = 0;
+          iter ++;
         }
       }
-      if(che_and == (con_num - 1))//If meet AND logic, assign student's index
-      {
-        exe->arr[iter] = 1;
-        iter ++;
-        count ++;
-      }
-      else if(che_and != (con_num - 1))
-      {
-        exe->arr[iter] = 0;
-        iter ++;
-      }
-      else if(che_or > -1)//If meet OR logic, assign student's index
-      {
-        exe->arr[iter] = 1;
-        iter ++;
-        count ++;
-      }
-      else if(che_or == -1)
-      {
-        exe->arr[iter] = 1;
-        iter ++;
-      }
-      che_and = -1;//Reset AND condition 
-      che_or = -1;//Reset OR condition
-      //loop_num = 0;
-    }
     //int total = k1 + k2;
+    }
 
     exe->len = count;
     
