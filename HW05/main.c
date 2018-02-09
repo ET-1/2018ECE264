@@ -40,7 +40,7 @@ int main(int argc, char ** argv)
 	    db = Connect(infile);
 	    if(db == NULL)//fail to read the intput file
 	    {
-	      printf("Fail to connect to db\n");
+	      printf("Fail to connect to db.\n");
 	      return EXIT_FAILURE; 
 	    }
 	    else//read the intput file successfully
@@ -65,7 +65,7 @@ int main(int argc, char ** argv)
 	    db = Connect(infile);
 	    if(db == NULL)//fail to read the intput file (level2)
 	    {
-	      printf("Fail to connect to db\n");
+	      printf("Fail to connect to db.\n");
 	      return EXIT_FAILURE; 
 	    }//(level2)
 	    else//read the intput file successfully (level2)
