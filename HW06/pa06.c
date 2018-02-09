@@ -281,6 +281,8 @@ ExecuteResult * ExecuteQuery(StudentDatabase * db, ParseResult * res)
   int count = 0;
   int iter = 0;
   int che_non = -1;
+  
+  
   //Memoery allocate for the object
   //Find all matched student's indexs
     exe = malloc(sizeof(ExecuteResult));
@@ -290,55 +292,71 @@ ExecuteResult * ExecuteQuery(StudentDatabase * db, ParseResult * res)
     for(int i = 0; i < stu_num; i++)//loop for students
     {
       Student * stu = db->students[i];
-      if(con_num > 1)
+      
+      
+      if(con_num > 1)//If there are more than one condition
       {
-        for(int j = 0; j < con_num; j++)//loop for conditions
+        for(int j = 0; j < con_num; j++)//Repeat for conditions
         {
           Condition * con = res->conditions[j];
           if(strcmp(res->logic, "AND") == 0)
           {
-            che_and = che_and + Compare(stu, con);
+            che_and = che_and + Compare(stu, con);//AND logic check
           }
           else if(strcmp(res->logic, "OR") == 0)
           {
-            che_or = che_or + Compare(stu, con);
+            che_or = che_or + Compare(stu, con);//OR logic check
           }
         }       
-        if(che_and == (con_num - 1))//If meet AND logic, assign student's index
+        
+        if(strcmp(res->logic, "AND") == 0)//If meet AND logic, assign student's index
         {
-          exe->arr[iter] = 1;
-          iter ++;
-          count ++;
+          if(che_and == (con_num - 1))
+          {
+            exe->arr[iter] = 1;
+            iter ++;
+            count ++;
+          }
+          else if(che_and != (con_num - 1))
+          {
+            exe->arr[iter] = 0;
+            iter ++;
+          }
         }
-        else if(che_and != (con_num - 1))
+        
+        else if(strcmp(res->logic, "OR") == 0)//If meet OR logic, assign student's index
         {
-          exe->arr[iter] = 0;
-          iter ++;
+          if(che_or > -1)
+          {
+            exe->arr[iter] = 1;
+            iter ++;
+            count ++;
+          }
+          else if(che_or == -1)
+          {
+            exe->arr[iter] = 0;
+            iter ++;
+          }
         }
-        else if(che_or > -1)//If meet OR logic, assign student's index
-        {
-          exe->arr[iter] = 1;
-          iter ++;
-          count ++;
-        }
-        else if(che_or == -1)
-        {
-          exe->arr[iter] = 1;
-          iter ++;
-        }
+        
+        
         che_and = -1;//Reset AND condition 
         che_or = -1;//Reset OR condition
       }
-      else
+      
+      
+      
+      
+      else//If there is only one condition
       {
         che_non = Compare(stu, res->conditions[0]);
-        if(che_non == 1)
+        if(che_non == 1)//AND logic check
         {
           exe->arr[iter] = 1;
           iter ++;
           count ++;
         }
-        else
+        else//OR logic check
         {
           exe->arr[iter] = 0;
           iter ++;
@@ -347,7 +365,7 @@ ExecuteResult * ExecuteQuery(StudentDatabase * db, ParseResult * res)
     //int total = k1 + k2;
     }
 
-    exe->len = count;
+    exe->len = count;//Assign total meeted requirements student number to exe object 
     
     
     return exe;
@@ -403,7 +421,8 @@ void WriteDb(StudentDatabase * db, SelectedField * info, ExecuteResult * execute
   }
   else
   {
-    fp = freopen(filename, "w", stdout);
+    fclose(fp);
+    fp = fopen(filename, "w");
     for(int i = 0; i < num; i++)
     {
 
