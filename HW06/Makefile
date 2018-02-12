@@ -14,7 +14,7 @@ pa06:$(OBJS)
 .c.o:
 	$(GCC) $(FLAGS) -c $*.c
 
-testcase: test1 test2 test4 test5 test6
+testcase: test1 test2 test3 test4 test5 test6 test7
 
 test1: pa06
 	$(VALGRIND) ./pa06 SELECT name age WHERE age ">" 10 AND id = 1
@@ -43,7 +43,12 @@ test6: pa06
 test7: pa06
 	$(VALGRIND) ./pa06 SELECT age enrollment year major name id WHERE enrollment = No
 	diff output.txt expected/test7.txt
+
+test8: pa06
+	$(VALGRIND) ./pa06 SELECT ag enrolment yar major name id WHERE enrollment = No	
 	
+test9: pa06
+	$(VALGRIND) ./pa06 SELECT age enrollment year major name id WHERE enrollment = No Yes = 1
 #test8: pa06
 #	$(VALGRIND) ./pa06 SELECT age name WHERE age ">" 10 AND id = 1
 #	diff nor.txt expected/notaorn.txt
