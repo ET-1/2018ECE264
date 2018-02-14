@@ -5,6 +5,81 @@
 #include "pa06.h"
 #define MAX_LEN 80
 
+
+#ifndef TEST_CONNECT
+StudentDatabase * Connect(char * filename) 
+{
+	FILE * fp;
+//	int c;
+	int stu_num = 0;
+	fp = fopen(filename, "r");//open the file with read only mode
+	if(fp == NULL)
+	{
+	  return NULL;
+	}
+	else
+	{
+	fseek(fp, 0, SEEK_SET);//go to the beginning of the file
+	
+	//count the TAB over the file to calculate the student numbers
+	while( !feof(fp))
+	{
+	  if(fgetc(fp) == '\n')
+	  {
+	    stu_num = stu_num + 1;
+	  }
+	}
+	
+
+	StudentDatabase * db = NULL;
+	db = malloc(sizeof(StudentDatabase));//allocate memory for the db
+	db->students = malloc(sizeof(Student*)*stu_num);
+	for(int ind = 0; ind < stu_num; ind ++)
+	{
+	  db->students[ind] = malloc(sizeof(Student));
+	}	
+	db->number = stu_num;
+
+//	Student ** stu = db -> students;
+	fseek(fp, 0, SEEK_SET);//go to the beginning of the file
+//	#ifdef debug2
+//	#endif
+	//read every line and store the corresponding element for every student
+	while( !feof(fp))
+	{
+	  for (int idx = 0; idx < stu_num; idx ++) 
+	  {
+	     //db->students[idx]->id;
+	     fscanf(fp, "%d,%[^,],%[^,],%[^,],%[^,],%d\n", &(db->students[idx]->id), db-> students[idx]->name, db->students[idx]->major, db->students[idx]->year, db->students[idx]->enrollment, &(db->students[idx]->age));
+	  
+	  }
+	}
+	fclose(fp);//close the file
+
+	return db;
+	}
+}
+#endif
+
+#ifndef TEST_CLOSE
+/* 
+	You have to complete this function
+	Free the memory you allocated in Connect() using free()
+	studb is a pointer to the database. 
+*/
+void Close(StudentDatabase * studb) 
+{
+	int stu_num = studb->number;
+	for(int idx = 0; idx < stu_num; idx++)
+	{
+	  free(studb->students[idx]);
+	}
+	free(studb->students);
+	free(studb);
+	
+}
+#endif
+
 #ifndef TEST_CONSRUCT
 /* 
 	Construct SelectedField.
@@ -274,6 +349,7 @@ ExecuteResult * ExecuteQuery(StudentDatabase * db, ParseResult * res)
 {
   //Define parameters
   ExecuteResult * exe = NULL;
+  ExecuteResult * exe1 = NULL;
   int stu_num = db->number;
   int con_num = res->condition_num;
   int che_and = -1;
@@ -366,9 +442,21 @@ ExecuteResult * ExecuteQuery(StudentDatabase * db, ParseResult * res)
     }
 
     exe->len = count;//Assign total meeted requirements student number to exe object 
-    
-    
-    return exe;
+    exe1 = malloc(sizeof(ExecuteResult));
+    exe1->arr = malloc(sizeof(int) * count);
+    exe1->len = count;
+    int index = 0;
+    for(int k = 0; k < stu_num; k++)
+    {
+      if(exe->arr[k] == 1)
+      {
+        exe1->arr[index] = k;
+        index ++; 
+      }
+    }
+    free(exe->arr);
+    free(exe);
+    return exe1;
 }
 #endif
 
@@ -413,22 +501,21 @@ void WriteDb(StudentDatabase * db, SelectedField * info, ExecuteResult * execute
 {
   FILE * fp = NULL;
   fp = fopen(filename, "r");
-  //fseek(fp, 1, SEEK_SET);
-  int num = db->number;
-  if(fp == NULL)
+  int len = execute_res->len;
+  if(fp == NULL)//If cannot open file, return Fail
   {
     printf("Failed to open file\n");
   }
   else
   {
     fclose(fp);
-    fp = fopen(filename, "w");
-    for(int i = 0; i < num; i++)
+    fp = fopen(filename, "w");//Reopen the file with writing mode
+    for(int ind = 0; ind < len; ind++)
     {
 
-      int ind = execute_res->arr[i];
-      if(ind == 1)
-      {
+      int i = execute_res->arr[ind];//If the corresponding index is true, printout the student's information
+      //if(ind == 1)
+      //{
         //fputs(" ", fp);
         if(info->id == true)
         {
@@ -455,7 +542,7 @@ void WriteDb(StudentDatabase * db, SelectedField * info, ExecuteResult * execute
           fprintf(fp, "age:%d ", db->students[i]->age);
         }
         fputs("\n", fp);
-      }
+      //}
     }
     fclose(fp);
   }
