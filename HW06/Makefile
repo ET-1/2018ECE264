@@ -9,7 +9,7 @@ VALGRIND = valgrind --tool=memcheck --leak-check=full
 all: pa06 testcase
 
 pa06:$(OBJS)
-	$(GCC) $(OBJS) $(OBJFILES) -o pa06
+	$(GCC) $(OBJS) -o pa06
 
 .c.o:
 	$(GCC) $(FLAGS) -c $*.c
@@ -48,7 +48,7 @@ test8: pa06
 	$(VALGRIND) ./pa06 SELECT ag enrolment yar major name id WHERE enrollment = No	
 	
 test9: pa06
-	$(VALGRIND) ./pa06 SELECT age enrollment year major name id WHERE enrollment = No Yes = 1
+	$(VALGRIND) ./pa06 SELECT age enrollment year major name id WHERE id "<" 50
 #test8: pa06
 #	$(VALGRIND) ./pa06 SELECT age name WHERE age ">" 10 AND id = 1
 #	diff nor.txt expected/notaorn.txt
