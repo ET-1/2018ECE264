@@ -22,11 +22,19 @@ int main(int argc, char **argv)
     db = Connect(infile);
   //  PrintDatabase(db);
     res = ParseQuery(argc, argv);
-    exe = ExecuteQuery(db, res);
-    WriteDb(db, res->field, exe, outfile);
-    FreeParseResult(res);
-    FreeExecuteResult(exe);
-    Close(db);
-    return EXIT_SUCCESS;
+    if(res == NULL)
+    {
+      Close(db);
+      return EXIT_FAILURE;
+    }
+    else
+    {
+      exe = ExecuteQuery(db, res);
+      WriteDb(db, res->field, exe, outfile);
+      FreeParseResult(res);
+      FreeExecuteResult(exe);
+      Close(db);
+      return EXIT_SUCCESS;
+    }
 }
 
