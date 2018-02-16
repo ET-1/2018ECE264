@@ -29,7 +29,7 @@ test3: pa06
 	diff output.txt expected/test3.txt
 
 test4: pa06
-	$(VALGRIND) ./pa06 SELECT major enrollment major id WHERE major = CS AND enrollment = No AND year = Sophomore
+	$(VALGRIND) ./pa06 SELECT id major enrollment WHERE major = CS AND enrollment = No AND year = Sophomore
 	diff output.txt expected/test4.txt
 
 test5: pa06
