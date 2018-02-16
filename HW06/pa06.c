@@ -240,32 +240,32 @@ ParseResult * ParseQuery(int num, char ** query)
   {
     if(strcmp(query[j], "id") == 0)
     {
-      result->field->id = 1;
+      result->field->id = true;
     }
     
     if(strcmp(query[j], "name") == 0)
     {
-      result->field->name = 1;
+      result->field->name = true;
     }
     
     if(strcmp(query[j], "major") == 0)
     {
-      result->field->major = 1;
+      result->field->major = true;
     }
     
     if(strcmp(query[j], "year") == 0)
     {
-      result->field->year = 1;
+      result->field->year = true;
     }    
 
     if(strcmp(query[j], "enrollment") == 0)
     {
-      result->field->enrollment = 1;
+      result->field->enrollment = true;
     }
     
     if(strcmp(query[j], "age") == 0)
     {
-      result->field->age = 1;
+      result->field->age = true;
     }
   }
   
