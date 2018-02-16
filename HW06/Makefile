@@ -49,11 +49,15 @@ test8: pa06
 	
 test9: pa06
 	$(VALGRIND) ./pa06 SELECT age enrollment year major name id WHERE id "<" 50
+
 test10: pa06
 	$(VALGRIND) ./pa06 SELECT age name enrollment year major id WHERE name = Lynox
 #	diff nor.txt expected/notaorn.txt
 
+test11: pa06
+	$(VALGRIND) ./pa06  age name enrollment year major id WHERE name = Lynox
 
-
+test12: pa06
+	$(VALGRIND) ./pa06 SELECT age name enrollment year major id name = Lynox
 clean:
 	/bin/rm -f pa06.o pa06 main.o
