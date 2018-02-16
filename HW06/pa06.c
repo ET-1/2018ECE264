@@ -134,7 +134,8 @@ ParseResult * ParseQuery(int num, char ** query)
   int num_or = 0;
   int num_con = 0;
   int con_log = -1;//Conditions logic    AND==1  OR==0
-  
+  int num_sel = 0;
+  int num_where = 0;
   
   
   //Find the indexs of SELECT and WHERE
@@ -142,10 +143,12 @@ ParseResult * ParseQuery(int num, char ** query)
   {
     if(strcmp(query[i],"SELECT") == 0)
     {
+      num_sel ++;
       sel_ind = i;
     }
     if(strcmp(query[i], "WHERE") == 0)
     {
+      num_where ++;
       con_ind = i;
     }
     if(strcmp(query[i], "AND") == 0)
@@ -160,7 +163,13 @@ ParseResult * ParseQuery(int num, char ** query)
     }
   }
   
-  
+  if((num_sel != 1) || (num_where != 1))
+  {
+    free(result);
+    return NULL;
+  }
+  else
+  {
  
   //Assign the AND or OR number to condition number  
   if(con_log == 1)
@@ -270,7 +279,7 @@ ParseResult * ParseQuery(int num, char ** query)
   }
   
   return result;
-    
+  }
 
 }
 #endif
