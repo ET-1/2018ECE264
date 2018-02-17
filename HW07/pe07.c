@@ -80,7 +80,7 @@ bool IsDouble(char* str, int index, bool dot)
 
 #endif
 
-#ifndef VALID_ID
+#ifndef VALIDID
 bool IsValidIdentifier(char* str, int index)
 {
   if(*str == '\0')
