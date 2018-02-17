@@ -4,6 +4,10 @@
 #include "pe07.h"
 #define MAX_LENGTH 100 //The maximum length of string
 
+void Memory_free(char ** string, int string_num)
+{
+
+}
 
 int main(int argc, char **argv) 
 {
@@ -58,31 +62,78 @@ int main(int argc, char **argv)
 	    
 	    
 	//2. Begin the compare work
+	for(int j = 0; j < str_num; j++)
+	{
 	    if(argc == 2)
 	    {
-	      free;
-	    }
-	    else if((argc == 3) && (strcmp(argv[3], "-I") == 0) )
-	    {
-	      free;
-	    }
-	    else if((argc == 3) && (strcmp(argv[3], "-D") == 0) )
-	    {
-	      free;
-	    }
-	    else if((argc == 3) && (strcmp(argv[3], "-VID") == 0) )
-	    {
-	      free;
-	    }
-	    else
-	    {
-	      free;
+	      if(IsInteger(str[j], 0))
+	      {
+	        printf("Integer\n");
+	      }
+	      else if(IsDouble(str[j], 0, 0))
+	      {
+	        printf("Double\n");
+	      }
+	      else if(IsValidIdentifier(str[j], 0))
+	      {
+	        printf("Identifier\n");
+	      }
+	      else
+	      {
+	        printf("None\n");
+	      }
 	    }
 	    
+	    
+	    else if((argc == 3) && (strcmp(argv[2], "-I") == 0) )
+	    {
+	      if(IsInteger(str[j], 0))
+	      {
+	        printf("Integer\n");
+	      }
+	      else
+	      {
+	        printf("Not integer\n");
+	      }	    
+	    }
+	    
+	    
+	    else if((argc == 3) && (strcmp(argv[2], "-D") == 0) )
+	    {
+	      if(IsDouble(str[j], 0, false))
+	      {
+	        printf("Double\n");
+	      }
+	      else
+	      {
+	        printf("Not double\n");
+	      }
+	    }
+	    
+	    
+	    else if((argc == 3) && (strcmp(argv[2], "-VID") == 0) )
+	    {
+	      if(IsValidIdentifier(str[j], 0))
+	      {
+	        printf("Identifier\n");
+	      }
+	      else
+	      {
+	        printf("Not identifier\n");
+	      }	  
+	    }	        
 	  }
+    for(int k = 0; k < str_num; k++)
+    {
+      free(str[k]);
+    }
+    free(str);
 	  return EXIT_SUCCESS;
+	 }
 	}
 					
 
 	
 }
+
+
