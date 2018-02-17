@@ -14,50 +14,65 @@ pa06:$(OBJS)
 .c.o:
 	$(GCC) $(FLAGS) -c $*.c
 
-testcase: test1 test2 test3 test4 test5 test6 test7
+testcase: test1 test2 test3 test4 test5 test6 test7 test8 test9 test10  test11
 
 test1: pa06
-	$(VALGRIND) ./pa06 SELECT name age WHERE age ">" 10 AND id = 1
-	diff output.txt expected/test1.txt
+	$(VALGRIND) ./pa06 SELECT major enrollment WHERE id ">" 199
+	diff output.txt grading/test1.txt
 
 test2: pa06
-	$(VALGRIND) ./pa06 SELECT age name WHERE age ">" 10 AND id = 1
-	diff output.txt expected/test2.txt
+	$(VALGRIND) ./pa06 SELECT enrollment major WHERE id ">" 199
+	diff output.txt grading/test2.txt
 
 test3: pa06
-	$(VALGRIND) ./pa06 SELECT enrollment age major WHERE age "<" 22 OR id = 100
-	diff output.txt expected/test3.txt
+	$(VALGRIND) ./pa06 SELECT name WHERE age ">" 20
+	diff output.txt grading/test3.txt
 
 test4: pa06
-	$(VALGRIND) ./pa06 SELECT id major enrollment WHERE major = CS AND enrollment = No AND year = Sophomore
-	diff output.txt expected/test4.txt
+	$(VALGRIND) ./pa06 SELECT name WHERE age ">" 20 AND id "<=" 100	
+	diff output.txt grading/test4.txt
 
 test5: pa06
-	$(VALGRIND) ./pa06 SELECT id WHERE enrollment = Yes
-	diff output.txt expected/test5.txt
+	$(VALGRIND) ./pa06 SELECT name WHERE age ">" 20 AND id "<=" 100 AND enrollment "=" Yes
+	diff output.txt grading/test5.txt
 
 test6: pa06
-	$(VALGRIND) ./pa06 SELECT id WHERE enrollment = Yes AND name = aa
-	diff output.txt expected/test6.txt	
+	$(VALGRIND) ./pa06 SELECT name WHERE age ">" 20 AND id "<=" 100 AND enrollment "=" Yes AND major "=" ECE
+	diff output.txt grading/test6.txt	
 		
 test7: pa06
-	$(VALGRIND) ./pa06 SELECT age enrollment year major name id WHERE enrollment = No
-	diff output.txt expected/test7.txt
+	$(VALGRIND) ./pa06 SELECT id enrollment age major name year WHERE id "<" 10
+	diff output.txt grading/test7.txt
 
 test8: pa06
-	$(VALGRIND) ./pa06 SELECT ag enrolment yar major name id WHERE enrollment = No	
+	$(VALGRIND) ./pa06 SELECT id enrollment age major name year WHERE id "<" 10 OR major "=" ECE
+	diff output.txt grading/test8.txt
 	
 test9: pa06
-	$(VALGRIND) ./pa06 SELECT age enrollment year major name id WHERE id "<" 50
+	$(VALGRIND) ./pa06 SELECT id enrollment age major name year WHERE id "<" 10 OR major "=" ECE OR age ">=" 19
+	diff output.txt grading/test9.txt
 
 test10: pa06
-	$(VALGRIND) ./pa06 SELECT age name enrollment year major id WHERE name = Lynox
-#	diff nor.txt expected/notaorn.txt
+	$(VALGRIND) ./pa06 SELECT id enrollment age major name year WHERE id "<" 10 OR major "=" ECE OR age ">=" 19 OR enrollment "=" Yes
+	diff output.txt grading/test10.txt
 
 test11: pa06
-	$(VALGRIND) ./pa06  age name enrollment year major id WHERE name = Lynox
+	$(VALGRIND) ./pa06  SELECT id enrollment age major name year WHERE id "<" 10 OR major "=" ECE OR age ">=" 19 OR enrollment "=" Yes OR name = ECE264
+		diff output.txt grading/test11.txt
 
 test12: pa06
 	$(VALGRIND) ./pa06 SELECT age name enrollment year major id name = Lynox
+	
+test15: pa06
+	$(VALGRIND) ./pa06 SELECT major enrollment WHERE id ">" 199
+	
+test16: pa06
+	$(VALGRIND) ./pa06 SELECT enrollment major WHERE id ">" 199
+
+test17: pa06
+	$(VALGRIND) ./pa06 SELECT name WHERE age ">" 20
+
+test18: pa06
+	$(VALGRIND) ./pa06 SELECT name WHERE age ">" 20 AND id "<=" 100
 clean:
 	/bin/rm -f pa06.o pa06 main.o
