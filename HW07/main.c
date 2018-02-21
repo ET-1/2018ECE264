@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 	
 	if((argc < 2) || (argc > 3))//If number of argument is not enough, failure
 	{
-	  printf("Wrong argument number\n");
+	  //printf("Wrong argument number\n");
 	  return EXIT_FAILURE;
 	}
 	else//If number of argument is enough, divide into different cases
@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 	  fp = fopen(filename, "r");
 	  if(fp == NULL)//If cannnot open the file successfully
 	  {
-	    printf("Wrong file name\n");
+	    //printf("Wrong file name\n");
 	    return EXIT_FAILURE;
 	  }
 	  else//If open the file successfully
