@@ -14,7 +14,7 @@ pe07:$(OBJS)
 .c.o:
 	$(GCC) $(FLAGS) -c $*.c
 
-testcase: test1 test2 test3 test4 test5 test6 test7
+testcase: test1 test2 test3 test4 test5
 
 test1: pe07
 	$(VALGRIND) ./pe07 testAll.txt >output.txt
@@ -32,5 +32,8 @@ test4: pe07
 	$(VALGRIND) ./pe07 testVID.txt -VID >output.txt
 	diff output.txt expOutVID.txt
 
+test5: pe07
+	$(VALGRIND) ./pe07 cases.txt >OutCases.txt
+	
 clean:
 	/bin/rm -f pe07.o pe07 main.o
