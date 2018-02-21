@@ -34,6 +34,15 @@ test4: pe07
 
 test5: pe07
 	$(VALGRIND) ./pe07 cases.txt >OutCases.txt
+
+test6: pe07
+	$(VALGRIND) ./pe07
+	
+test7: pe07
+	$(VALGRIND) ./pe07 cases.txt -I a
+	
+test8: pe07
+	$(VALGRIND) ./pe07 case.txt -I
 	
 clean:
 	/bin/rm -f pe07.o pe07 main.o
