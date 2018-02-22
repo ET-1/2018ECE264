@@ -66,7 +66,7 @@ int main(int argc, char **argv)
 	{
 	    if(argc == 2)
 	    {
-	      if(IsInteger(str[j], 0))
+	      if(IsInteger(str[j], 0))//If user select testall mode
 	      {
 	        printf("Integer\n");
 	      }
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 	    }
 	    
 	    
-	    else if((argc == 3) && (strcmp(argv[2], "-I") == 0) )
+	    else if((argc == 3) && (strcmp(argv[2], "-I") == 0) )//If user select testInteger mode
 	    {
 	      if(IsInteger(str[j], 0))
 	      {
@@ -98,7 +98,7 @@ int main(int argc, char **argv)
 	    }
 	    
 	    
-	    else if((argc == 3) && (strcmp(argv[2], "-D") == 0) )
+	    else if((argc == 3) && (strcmp(argv[2], "-D") == 0) )//If user select testDouble mode
 	    {
 	      if(IsDouble(str[j], 0, false))
 	      {
@@ -111,7 +111,7 @@ int main(int argc, char **argv)
 	    }
 	    
 	    
-	    else if((argc == 3) && (strcmp(argv[2], "-VID") == 0) )
+	    else if((argc == 3) && (strcmp(argv[2], "-VID") == 0) )//If user select testIdentifier mode
 	    {
 	      if(IsValidIdentifier(str[j], 0))
 	      {
@@ -125,9 +125,9 @@ int main(int argc, char **argv)
 	  }
     for(int k = 0; k < str_num; k++)
     {
-      free(str[k]);
+      free(str[k]);//free the memory allocated 
     }
-    free(str);
+    free(str);//free the memory allocated 
 	  return EXIT_SUCCESS;
 	 }
 	}
