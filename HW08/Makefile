@@ -14,30 +14,32 @@ pa08:$(OBJS)
 .c.o:
 	$(GCC) $(FLAGS) -c $*.c
 
-testcase: test1 test2 test3 test4 test5
+testcase: test1 test2 test3 test4 test5 test6
 
 test1: pa08
-	$(VALGRIND) ./pa08 -D 0 1 4
-	#diff output.txt expOutAll.txt
+	$(VALGRIND) ./pa08 -D 0 2 3 >output.txt
+	diff output.txt outDouble.txt
 
 test2: pa08
-	$(VALGRIND) ./pa08 testInt.txt -I >output.txt
-	diff output.txt expOutInt.txt
+	$(VALGRIND) ./pa08 -D 0 2 3 | sort >output.txt
+	diff output.txt outSortedDouble.txt 
 
 test3: pa08
-	$(VALGRIND) ./pa08 testDbl.txt -D >output.txt
-	diff output.txt expOutDbl.txt
+	$(VALGRIND) ./pa08 -D 4 9 5 >output.txt
+	diff output.txt outDouble2.txt
 
 test4: pa08
-	$(VALGRIND) ./pa08 testVID.txt -VID >output.txt
-	diff output.txt expOutVID.txt
+	$(VALGRIND) ../pa08 -D 4 9 5 | sort >output.txt
+	diff output.txt outSortedDouble2.txt
 
 test5: pa08
-	$(VALGRIND) ./pa08 cases.txt >OutCases.txt
+	$(VALGRIND) ./pa08 -D 3 6 4 >output.txt
+	diff output.txt outDouble3.txt
 
 test6: pa08
-	$(VALGRIND) ./pa08
-	
+	$(VALGRIND) ./pa08 -D 3 6 4 | sort >output.txt
+	diff output.txt outSortedDouble3.txt
+
 test7: pa08
 	$(VALGRIND) ./pa08 cases.txt -I a
 	
