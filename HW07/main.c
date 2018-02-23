@@ -9,7 +9,7 @@ void Memory_free(char ** string, int string_num)
 
 }
 
-int main(int argc, char **argv) 
+int main(int argc, char *argv[]) 
 {
 	char * filename;
 	FILE * fp;
