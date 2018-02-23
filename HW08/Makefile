@@ -40,6 +40,9 @@ test6: pa08
 	$(VALGRIND) ./pa08 -D 3 6 4 | sort >output.txt
 	diff output.txt outSortedDouble3.txt
 
+test9: pa08
+	$(VALGRIND) ./pa08 -D 0 2 4 >output.txt
+	
 test7: pa08
 	$(VALGRIND) ./pa08 cases.txt -I a
 	
