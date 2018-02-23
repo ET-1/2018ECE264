@@ -29,7 +29,10 @@ int main(int argc, char *argv[])
 	    }
 	    
 	    //2. Excute the createDouble function for Double mode
-	    createDouble(string, var, 0, false, len);
+	    for(int j = 3; j < (len + 1); j++)
+	    {
+	      createDouble(string, var, 0, false, j);
+	    }
 	    free(var);
 	    free(string);
 	  
