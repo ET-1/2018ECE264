@@ -8,20 +8,12 @@ void createDouble(char * string,DoubleVar* var,int index,bool dot,int len)
   int sel = 0;
   int start = var->digit_start;
   int end = var->digit_end;
+   
+    //If the index equals the required length, print out the strings and return 
     
-    //Do the recursion starting from start to end
     if((index == len))
-    {
-      for(int i = 0; i < len; i++)
-      {
-        if(string[i] == '.')
-        {
-          dot = true;
-        }
-      }
-      
-      //If the length of the string is larger than 3, print out each string 
-      if(dot == true)
+    {   
+      if(dot == true)//Only print out strings with dot
       { 
         for(int i = 0; i < len; i++)
         {
@@ -31,28 +23,39 @@ void createDouble(char * string,DoubleVar* var,int index,bool dot,int len)
       }
       return;
     }
+    
+    //If the index is less than the required length, do recursion to select character ranging from start digit to end digit
     else
     { 
-      for(int pos = 1; pos <= (len -2); pos++)
+      for(int pos = 1; pos <= (len -2); pos++)//Insert the dot for strings without dot
       {
         if((index == pos) && (dot != true))
         {
           string[index] = '.';
           createDouble(string, var, index + 1, true, len);
         }
-        else
+      }
+      
+      if(dot == true)//If dot flag is on
+      {
+        for(sel = start; sel <= end; sel++)//Insert the digit for strings in each recursion
         {
-          for(sel = start; sel <= end; sel++)
-          {
-            string[index] = sel + '0';
-            //var->digit_start = var->digit_start + 1;
-            createDouble(string, var, index + 1, false, len);
-          }
+          string[index] = sel + '0';
+          createDouble(string, var, index + 1, true, len);
+        }
+      }
+      
+      else//If dot flag is off
+      {
+        for(sel = start; sel <= end; sel++)//Insert the digit for strings in each recursion
+        {
+          string[index] = sel + '0';
+          createDouble(string, var, index + 1, false, len);
         }
       }
     }
-      
 }
+      
 
   
 
