@@ -14,9 +14,10 @@ int main(int argc, char *argv[])
 	{
 	  return EXIT_FAILURE;//Return failure
 	} 
+	
 	else//If arguments are sufficient
 	{
-	  if((argc == 5) && (strcmp(argv[1], "-D") == 0))
+	  if((argc == 5) && (strcmp(argv[1], "-D") == 0))//Go to create double mode
 	  {
 	    //1. Setup for the parameters extracted from argv
 	    var->digit_start = (int) strtol(argv [2], NULL, 10) ;
@@ -28,6 +29,7 @@ int main(int argc, char *argv[])
 	      string[i] = 0;
 	    }
 	    
+	    
 	    //2. Excute the createDouble function for Double mode
 	    for(int j = 3; j < (len + 1); j++)
 	    {
@@ -37,7 +39,10 @@ int main(int argc, char *argv[])
 	    free(string);
 	  
 	  }
-	  //3. Excute the createVID function for VID mode
+	  
+	  
+	  
+		//Go to create double mode
 	  
 	}
 	
