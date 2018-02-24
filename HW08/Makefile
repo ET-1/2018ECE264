@@ -29,7 +29,7 @@ test3: pa08
 	diff output.txt outDouble2.txt
 
 test4: pa08
-	$(VALGRIND) ../pa08 -D 4 9 5 | sort >output.txt
+	$(VALGRIND) ./pa08 -D 4 9 5 | sort >output.txt
 	diff output.txt outSortedDouble2.txt
 
 test5: pa08
@@ -41,7 +41,7 @@ test6: pa08
 	diff output.txt outSortedDouble3.txt
 
 test9: pa08
-	$(VALGRIND) ./pa08 -D 0 2 4 >output.txt
+	$(VALGRIND) ./pa08 -D 0 9 5 | sort >output.txt
 	
 test7: pa08
 	$(VALGRIND) ./pa08 cases.txt -I a
