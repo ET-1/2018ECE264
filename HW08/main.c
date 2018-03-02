@@ -39,40 +39,41 @@ int main(int argc, char *argv[])
 	      createDouble(string, var, 0, false, j);
 	    }
 	    free(var);
+	    free(Dvar);
 	    free(string);
 	  
 	  }
 	  
 	  
-	  
-		/*//Go to create double mode
-		if((argc == 5) && (strcmp(argv[1], "-VID") == 0))//Go to create double mode
+
+		if((argc == 9) && (strcmp(argv[1], "-VID") == 0))//Go to create VID mode
 	  {
 	    //1. Setup for the parameters extracted from argv
-	    Dvar->lower_case_start = (int) strtol(argv [2], NULL, 10) ;
-	    Dvar->lower_case__end = (int) strtol(argv [3], NULL, 10) ;
-	    Dvar->upper_case_start = (int) strtol(argv [4], NULL, 10) ;
-	    Dvar->upper_case_end = (int) strtol(argv [5], NULL, 10) ;
-	    Dvar->digit_start = (int) strtol(argv [6], NULL, 10) ;
-	    Dvar->digit_end = (int) strtol(argv [7], NULL, 10) ;
+	    Dvar->lower_case_start = argv[2][0];
+	    Dvar->lower_case_end = argv[3][0];
+	    Dvar->upper_case_start = argv[4][0];
+	    Dvar->upper_case_end = argv[5][0];
+	    Dvar->digit_start = argv[6][0];
+	    Dvar->digit_end = argv[7][0];
 			len = (int) strtol(argv [8], NULL, 10) ;
 				    
 	    string = malloc(sizeof(char) * len);
-	    for(int i = 0; i < len; i++)
+	    for(int u = 0; u < len; u++)
 	    {
-	      string[i] = 0;
+	      string[u] = 0;
 	    }
 	    
 	    
-	    //2. Excute the createDouble function for Double mode
-	    for(int j = 1; j < (len + 1); j++)
+	    //2. Excute the createVID function for VID mode
+	    for(int k = 1; k < (len + 1); k++)
 	    {
-	      createDouble(string, Dvar, 0, false, j);
+	      createVID(string, Dvar, 0, k);
 	    }
 	    free(Dvar);
+	    free(var);
 	    free(string);
 	  
-	  }*/
+	  }
 	  
 	}
 	
