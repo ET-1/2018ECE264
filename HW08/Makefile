@@ -15,50 +15,50 @@ pa08:$(OBJS)
 .c.o:
 	$(GCC) $(FLAGS) -c $*.c
 
-testcase: test1 test2 test3 test4 test5 testcov
+testcase: testDouble1 testDouble2 testDouble3 testDouble4 testDouble5 testDouble6 testDouble7 testDouble8 testDouble9 testDouble10 testcov
 
 
-test1: pa08
-	$(VALGRIND) ./pa08 -D 0 2 3 | sort >output.txt
-	diff output.txt outSortedDouble.txt 
+testDouble1: pa08
+	$(VALGRIND) ./pa08 -D 0 2 3 | sort >testDouble1.txt
+	diff testDouble1.txt outSortedDouble.txt 
 
-test2: pa08
-	$(VALGRIND) ./pa08 -D 4 9 5 | sort >output.txt
-	diff output.txt outSortedDouble2.txt
+testDouble2: pa08
+	$(VALGRIND) ./pa08 -D 4 9 5 | sort >testDouble2.txt
+	diff testDouble2.txt outSortedDouble2.txt
 
-test3: pa08
-	$(VALGRIND) ./pa08 -D 3 6 4 | sort >output.txt
-	diff output.txt outSortedDouble3.txt
+testDouble3: pa08
+	$(VALGRIND) ./pa08 -D 3 6 4 | sort >testDouble3.txt
+	diff testDouble3.txt outSortedDouble3.txt
 
-test4: pa08
-	$(VALGRIND) ./pa08 -D 0 9 5 | sort >output.txt
+testDouble4: pa08
+	$(VALGRIND) ./pa08 -D 0 9 5 | sort >testDouble4.txt
 	
-test5: pa08
-	$(VALGRIND) ./pa08 -D 0 7 3 | sort >output.txt
+testDouble5: pa08
+	$(VALGRIND) ./pa08 -D 0 7 3 | sort >testDouble5.txt
 	
-test6: pa08
-	$(VALGRIND) ./pa08 -D 2 9 7 | sort >output.txt
+testDouble6: pa08
+	$(VALGRIND) ./pa08 -D 2 9 6 | sort >testDouble6.txt
 
-test7: pa08
-	$(VALGRIND) ./pa08 -D 6 9 7 | sort >output.txt
+testDouble7: pa08
+	$(VALGRIND) ./pa08 -D 6 9 7 | sort >testDouble7.txt
 	
-test8: pa08
-	$(VALGRIND) ./pa08 -D 1 3 5 | sort >output.txt
+testDouble8: pa08
+	$(VALGRIND) ./pa08 -D 1 3 5 | sort >testDouble8.txt
 	
-test9: pa08
-	$(VALGRIND) ./pa08 -D 2 3 5 | sort >output.txt
+testDouble9: pa08
+	$(VALGRIND) ./pa08 -D 2 3 5 | sort >testDouble9.txt
 	
-test10: pa08
-	$(VALGRIND) ./pa08 -D 3 6 3 | sort >output.txt
+testDouble10: pa08
+	$(VALGRIND) ./pa08 -D 3 6 3 | sort >testDouble10.txt
 		
-test: pa08
-	$(VALGRIND) ./pa08 cases.txt -I a
+#testDouble: pa08
+#	$(VALGRIND) ./pa08 cases.txt -I a
 	
-test6: pa08
-	$(VALGRIND) ./pa08 case.txt -I
+#testDouble6: pa08
+#	$(VALGRIND) ./pa08 case.txt -I
 	
-test7: 
-	$(VALGRIND) ./pa08 case.txt -I
+#testDouble7: 
+#	$(VALGRIND) ./pa08 case.txt -I
 
 testcov: pa08
 	gcov main.c
