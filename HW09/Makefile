@@ -46,4 +46,4 @@ test8: pa09
 	$(VALGRIND) ./pa09 case.txt -I
 	
 clean:
-	/bin/rm -f pa09.o pa09 main.o
+	/bin/rm -f pa09.o pa09 main.o read_write.o
