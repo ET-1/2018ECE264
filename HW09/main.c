@@ -20,14 +20,59 @@
 */
 
 
-int main(int argc, char ** argv) {
+int main(int argc, char ** argv) 
+{
 	// TODO 1. check the arguments, print "Wrong arguments\n" if anything fails
+	if(argc != 4)//If argc is not 4
+	{
+	  printf("Wrong arguments\n");
+	  return EXIT_FAILURE;
+	}
+	
+	else//If argc is 4
+	{
 	// TODO 2. ReadDatabase and get the pointer to StudentDatabase
+	  StudentDatabase * db;
+	  db = malloc(sizeof(StudentDatabase));
+	  db = ReadDatabase(argv[1]);
+	
+	
 	// TODO 3. Sort the database according to argument if "-n" then call SortDatabaseByName
 	// else if "-a" then call SortDatabaseByAge
+	  if(strcmp(argv[2], "-n") == 0)
+	  {
+	    SortDatabaseByName(db);
+	  }
+	  else if((strcmp(argv[2], "-a") == 0))
+	  {
+	    SortDatabaseByAge(db);
+	  }
+	  else
+	  {
+	    printf("Wrong arguments\n");
+	    return EXIT_FAILURE;
+	  }
+	  
+	  
 	// TODO 4. Write the output to a binary file
+	  int write_flag = 0;
+	  write_flag = WriteDatabase(argv[3], db);
+
+
 	// TODO 5. print "Write to db\n" if `WriteDatabase()` work. Otherwise, print "Fail to write to db\n"
+	  if(write_flag == 1)
+	  {
+	    printf("Write to db\n");
+	  }
+	  else
+	  {
+	    printf("Fail to write to db\n");
+	  }
+	  
+	  
 	// TODO 6. Free all the memory
+		Close(db);
+	}
 
 
 	return EXIT_SUCCESS;
