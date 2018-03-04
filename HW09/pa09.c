@@ -21,15 +21,21 @@
 */
 #ifndef STUDENT_SORT
 
-void StudentQsort(Student** stuArray, int startIndex, int endIndex , CompareFunction compare) {
+void StudentQsort(Student** stuArray, int startIndex, int endIndex , CompareFunction compare) 
+{
 	//This is Qsort specifically for Students database
 	//TODO 1: Check base condition
-
+	int parIndex;
+	if(startIndex < endIndex)
+	{
+	
 	//TODO 2: Get the partition index - i.e call  the partition function and get partition index
-
+		parIndex = Partition(stuArray, startIndex, endIndex, compare);
 
 	//TODO 3: Call the StudentQsort recursively as mentioned in README
-
+		StudentQsort(stuArray, startIndex, parIndex - 1, compare);
+		StudentQsort(stuArray, parIndex + 1, endIndex, compare);
+	}
 
 
 }
@@ -50,15 +56,20 @@ void StudentQsort(Student** stuArray, int startIndex, int endIndex , CompareFunc
 * Quicksort is in-place sorting algorithm, which means that it doesn't use extra space for storing
 * the intermediate or final result.
 */
-int Partition(Student** stuArray, int start, int end , CompareFunction compare){
+int Partition(Student** stuArray, int start, int end , CompareFunction compare)
+{
 
+  int index = 0;
 	//TODO 1. Take the pivot to be the last element of the stuArray
+	Student * pivot = stuArray[end];
 
 
 	//TODO 2. Print the pivot by calling PrintStudent function
-
+	PrintStudent(pivot);
+	
+	
 	//TODO 3. Initialize the partition Index
-
+	index = start - 1;
 
 	//TODO 4: //1. start from the left side find the value greater than the pivot .
 	// Once you find it - let that be A
@@ -66,10 +77,21 @@ int Partition(Student** stuArray, int start, int end , CompareFunction compare){
 	// once you find it let that be B
 	// swap A & B
 	// Repeat till left<=right
+	for(int j = 0; j < (end - 1); j++)
+	{
+	  if(compare(stuArray[j],  pivot) >= 0)
+	  {
+	    index++;
+	    SwapStudent(&stuArray[j], &stuArray[index]);
+	  }
+	}
+	
+	SwapStudent(&stuArray[index + 1], &stuArray[end]);
 
 	//TODO 5. return the partition Index - check README FAQ example to see its working
+	return (index + 1);
 
-	return 0;
+
 }
 
 #endif
@@ -78,9 +100,14 @@ int Partition(Student** stuArray, int start, int end , CompareFunction compare){
 
 #ifndef SWAP_STUDENT
 //Following function swaps the elements of the struct type Student
-void SwapStudent(Student** stu1, Student** stu2){
+void SwapStudent(Student** stu1, Student** stu2)
+{
+  Student * temp;
 	//TODO 1. Initialize tmp variable to store one of the student value
+	temp = * stu1;
 	//TODO 2. implement the swap
+	*stu1 = *stu2;
+	*stu2 = temp;
 }
 
 #endif
@@ -89,8 +116,16 @@ void SwapStudent(Student** stu1, Student** stu2){
 
 #ifndef CLOSE
 
-void Close(StudentDatabase * studb) {
+void Close(StudentDatabase * studb) 
+{
 	//TODO : Free all the variables
+		for(int i = 0; i < (studb->number); i++)
+	  {
+	    free(studb->students[i]);
+	  }
+	  
+	  free(studb->students);
+	  free(studb);
 }
 
 #endif
@@ -116,7 +151,8 @@ void PrintStudent(Student *student){
  * Input is Student datastructure with one of the field as Name
  * */
 
-static int CompareByName(const void * s1, const void * s2) {
+static int CompareByName(const void * s1, const void * s2) 
+{
 
 	// get the address of the array
 	const Student ** s1_array =  (const Student **) s1;
@@ -128,7 +164,8 @@ static int CompareByName(const void * s1, const void * s2) {
 }
 
 
-void SortDatabaseByName(StudentDatabase * studb) {
+void SortDatabaseByName(StudentDatabase * studb) 
+{
 	if (studb != NULL) {
 		StudentQsort(studb -> students, 0, studb -> number-1, CompareByName);
 	}
@@ -139,7 +176,8 @@ void SortDatabaseByName(StudentDatabase * studb) {
  * Input is Student datastructure with one of the field as Name
  * */
 
-static int CompareByAge(const void * s1, const void * s2) {
+static int CompareByAge(const void * s1, const void * s2) 
+{
 
 	// get the address of the array
 	const Student ** s1_array = (const Student **) s1;
@@ -153,7 +191,8 @@ static int CompareByAge(const void * s1, const void * s2) {
 }
 
 
-void SortDatabaseByAge(StudentDatabase * studb) {
+void SortDatabaseByAge(StudentDatabase * studb) 
+{
 	if (studb != NULL) {
 		StudentQsort(studb -> students, 0, studb -> number-1, CompareByAge);
 	}
