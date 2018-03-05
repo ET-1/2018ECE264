@@ -97,7 +97,7 @@ int WriteDatabase(char *filename, StudentDatabase * db)
 		{  
 		  for(int i = 0; i < (db->number); i++)//Write all student into file in binary 
 		  {
-		    write_flag = fwrite(db, sizeof(Student), 1, fptr);
+		    write_flag = fwrite(db->students[i], sizeof(Student), 1, fptr);
 		    
 		    if(write_flag == 1)//Compare the written size
 		    {
