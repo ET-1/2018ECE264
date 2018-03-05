@@ -33,7 +33,6 @@ int main(int argc, char ** argv)
 	{
 	// TODO 2. ReadDatabase and get the pointer to StudentDatabase
 	  StudentDatabase * db;
-	  db = malloc(sizeof(StudentDatabase));
 	  db = ReadDatabase(argv[1]);
 	
 	

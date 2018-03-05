@@ -60,12 +60,15 @@ int Partition(Student** stuArray, int start, int end , CompareFunction compare)
 {
 
   int index = 0;
+  static int comparator;
 	//TODO 1. Take the pivot to be the last element of the stuArray
 	Student * pivot = stuArray[end];
 
 
 	//TODO 2. Print the pivot by calling PrintStudent function
 	PrintStudent(pivot);
+	//PrintStudent(stuArray[start]);
+	//PrintStudent(stuArray[start + 1]);
 	
 	
 	//TODO 3. Initialize the partition Index
@@ -79,7 +82,11 @@ int Partition(Student** stuArray, int start, int end , CompareFunction compare)
 	// Repeat till left<=right
 	for(int j = 0; j < (end - 1); j++)
 	{
-	  if(compare(stuArray[j],  pivot) >= 0)
+		//PrintStudent(stuArray[j]);
+		//PrintStudent(pivot);		
+	  comparator = compare(stuArray[j],  stuArray[end]);
+	  
+	  if(comparator >= 0)
 	  {
 	    index++;
 	    SwapStudent(&stuArray[j], &stuArray[index]);

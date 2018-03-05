@@ -38,7 +38,7 @@ StudentDatabase * ReadDatabase(char * filename)
 
 	
 	  // TODO 5. Allocate the memory for the db->students structure
-	  db->students = malloc(sizeof(Student) * (db->number));
+	  db->students = malloc(sizeof(Student *) * (db->number));
 	
     for(int i = 0; i < (db->number); i++)
   	{
