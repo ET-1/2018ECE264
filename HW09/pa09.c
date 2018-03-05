@@ -59,8 +59,9 @@ void StudentQsort(Student** stuArray, int startIndex, int endIndex , CompareFunc
 int Partition(Student** stuArray, int start, int end , CompareFunction compare)
 {
 
-  int increment = start;
-  int decrement = end;
+  int low = start;
+  int high = end - 1;
+  int parIndex;
 	//TODO 1. Take the pivot to be the last element of the stuArray
 	Student * pivot = stuArray[end];
 
@@ -72,35 +73,45 @@ int Partition(Student** stuArray, int start, int end , CompareFunction compare)
 	
 	
 	//TODO 3. Initialize the partition Index
-
+	parIndex = 0;
 	//TODO 4: //1. start from the left side find the value greater than the pivot .
 	// Once you find it - let that be A
 	// 2. Start from end now and find the value which is smaller than the pivot
 	// once you find it let that be B
 	// swap A & B
 	// Repeat till left<=right
-	if(increment < decrement)
+	while(low < high)
 	{
-		while((compare(&stuArray[increment],  &pivot) <= 0) && (increment < end))
+		while((compare(&stuArray[low],  &pivot) >= 0) && (low < end))
 		{
-	 	 increment ++;
+	 	 low ++;
 		}
 	
-		while(compare(&stuArray[decrement - 1], &pivot) > 0)
+		while((compare(&stuArray[high], &pivot) < 0) && (start < high))
 		{
-		  decrement --;
+		  high --;
 		}
 		
-		if(increment < decrement)
+		if(low < high)
 		{
-	  	SwapStudent(&stuArray[increment], &stuArray[decrement]);
+	  	SwapStudent(&stuArray[low], &stuArray[high]);
 		}
+		
+		parIndex = low;
 	}
 	
-	SwapStudent(&stuArray[decrement], &pivot);
-
+	if(compare(&stuArray[high], &pivot) < 0)
+	{
+		SwapStudent(&stuArray[high], &stuArray[end]);
 	//TODO 5. return the partition Index - check README FAQ example to see its working
-	return decrement;
+	return low;	
+	}
+	else
+	{
+	  return high + 1;
+	}
+	
+
 
 
 }
