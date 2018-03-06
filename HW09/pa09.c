@@ -80,39 +80,34 @@ int Partition(Student** stuArray, int start, int end , CompareFunction compare)
 	// once you find it let that be B
 	// swap A & B
 	// Repeat till left<=right
-	while(low < high)
+	while(low <= high)
 	{
-		while((compare(&stuArray[low],  &pivot) >= 0) && (low < end))
+		while((compare(&stuArray[low],  &pivot) > 0) && (low < end))
 		{
 	 	 low ++;
 		}
 	
-		while((compare(&stuArray[high], &pivot) < 0) && (start < high))
+		while((compare(&stuArray[high], &pivot) < 0) && (start <= high))
 		{
 		  high --;
 		}
 		
-		if(low < high)
+		if(low <= high)
 		{
 	  	SwapStudent(&stuArray[low], &stuArray[high]);
+		  low ++;
+		  high --;
 		}
-		
-		parIndex = low;
 	}
 	
-	if(compare(&stuArray[high], &pivot) < 0)
-	{
-		SwapStudent(&stuArray[high], &stuArray[end]);
+	//if(compare(&stuArray[low], &pivot) < 0)
+	//{
+		SwapStudent(&stuArray[low], &stuArray[end]);
 	//TODO 5. return the partition Index - check README FAQ example to see its working
+
+	//}
+
 	return low;	
-	}
-	else
-	{
-	  return high + 1;
-	}
-	
-
-
 
 }
 
