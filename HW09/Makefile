@@ -18,30 +18,32 @@ testcase: test1 test2 test3 test4 test5
 
 test1: pa09
 	$(VALGRIND) ./pa09 smallDbBinary.bin -n sortSmallbyname.bin >output.txt
-	#diff output.txt expectedTxt/expectedSmallPivotName.txt
+	diff output.txt expectedTxt/expectedSmallPivotName.txt
 
 test2: pa09
 	$(VALGRIND) ./pa09 smallDbBinary.bin -a sortSmallbyage.bin >output.txt
-	#diff output.txt expectedTxt/expectedSmallPivotAge.txt
+	diff output.txt expectedTxt/expectedSmallPivotAge.txt
 
 test3: pa09
 	$(VALGRIND) ./pa09 databaseBinary.bin -n sortbyname.bin >output.txt
-	#diff output.txt expectedTxt/expectedPivotName.txt
+	diff output.txt expectedTxt/expectedPivotName.txt
 
 test4: pa09
 	$(VALGRIND) ./pa09 databaseBinary.bin -a sortbyage.bin >output.txt
-	#diff output.txt expectedTxt/expectedPivotAge.txt
+	diff output.txt expectedTxt/expectedPivotAge.txt
 
 test5: pa09
-	$(VALGRIND) ./pa09 databaseBinary.bin -n sortbyname.bin >output.txt
-	#diff output.txt expectedTxt/expectedPivotAge.txt
+	valgrind --tool=memcheck --log-file=memcheckage.txt --leak-check=full --verbose ./pa09 databaseBinary.bin -n sortbyname.bin > output.txt
+	#diff output.txt expectedTxt/memcheckage.txt
 	
 test6: pa09
-	$(VALGRIND) ./pa09
+	valgrind --tool=memcheck --log-file=memcheckage.txt --leak-check=full --verbose ./pa09 databaseBinary.bin -a sortbyage.bin >output.txt
+#	diff output.txt expectedTxt/memcheckage.txt
 	
 test7: pa09
-	$(VALGRIND) ./pa09 cases.txt -I a
-	
+  valgrind --tool=memcheck --log-file=memcheckage.txt --leak-check=full --verbose ./pa09 databaseBinary.bin -n sortbyname.bin
+#	diff output.txt expectedTxt/memcheck.txt
+		
 test8: pa09
 	$(VALGRIND) ./pa09 case.txt -I
 	
