@@ -14,7 +14,7 @@ pa09:$(OBJS)
 .c.o:
 	$(GCC) $(FLAGS) -c $*.c
 
-testcase: test1 test2 test3 test4 test5
+testcase: test1 test2 test3 test4 test8 test9 test10 test11 test12 test13 test14 test15
 
 test1: pa09
 	$(VALGRIND) ./pa09 smallDbBinary.bin -n sortSmallbyname.bin >output.txt
