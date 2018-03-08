@@ -73,11 +73,20 @@ int Partition(Student** stuArray, int start, int end , CompareFunction compare)
 	
 	
 	//TODO 3. Initialize the partition Index
+<<<<<<< HEAD
 	parIndex = 0;
 	//TODO 4: //1. start from the left side find the value greater than the pivot .
 	// Once you find it - let that be A
 	// 2. Start from end now and find the value which is smaller than the pivot
 	// once you find it let that be B
+=======
+
+
+	//TODO 4: //1. start from the left side, increment till the value is smaller than the pivot .
+	// Once you find it, let that be A
+	// 2. Start from right side(end-1) and decrement till the value is greater than the pivot
+	// once you find it, let that be B
+>>>>>>> c34ef714a7b81c6afc321dae5780d9f873c7b5ad
 	// swap A & B
 	// Repeat till left<=right
 	while(low <= high)

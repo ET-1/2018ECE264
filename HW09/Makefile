@@ -35,6 +35,7 @@ test4: pa09
 test5: pa09
 	valgrind --tool=memcheck --log-file=memcheckage.txt --leak-check=full --verbose ./pa09 databaseBinary.bin -n sortbyname.bin > output.txt
 	#diff output.txt expectedTxt/memcheckage.txt
+
 	
 test6: pa09
 	valgrind --tool=memcheck --log-file=memcheckage.txt --leak-check=full --verbose ./pa09 databaseBinary.bin -a sortbyage.bin >output.txt
@@ -44,8 +45,39 @@ test7: pa09
   valgrind --tool=memcheck --log-file=memcheckage.txt --leak-check=full --verbose ./pa09 databaseBinary.bin -n sortbyname.bin
 #	diff output.txt expectedTxt/memcheck.txt
 		
+
 test8: pa09
-	$(VALGRIND) ./pa09 case.txt -I
+	$(VALGRIND) ./pa09 databaseBinary.bin -n sortDB20name.bin >output.txt
+	diff output.txt expectedTxt/expectedDB20Name.txt
+
+test9: pa09
+	$(VALGRIND) ./pa09 databaseBinary.bin -a sortDB20age.bin >output.txt
+	diff output.txt expectedTxt/expectedDB20Age.txt
+
+test10: pa09
+	$(VALGRIND) ./pa09 databaseBinary.bin -n sortDB40name.bin >output.txt
+	diff output.txt expectedTxt/expectedDB40Name.txt
+
+test11: pa09
+	$(VALGRIND) ./pa09 databaseBinary.bin -a sortDB40age.bin >output.txt
+	diff output.txt expectedTxt/expectedDB40Age.txt
+
+
+test12: pa09
+	$(VALGRIND) ./pa09 databaseBinary.bin -n sortDB80name.bin >output.txt
+	diff output.txt expectedTxt/expectedDB80Name.txt
+
+test13: pa09
+	$(VALGRIND) ./pa09 databaseBinary.bin -a sortDB80age.bin >output.txt
+	diff output.txt expectedTxt/expectedDB80Age.txt
 	
+test14: pa09
+	$(VALGRIND) ./pa09 databaseBinary.bin -n sortDB100name.bin >output.txt
+	diff output.txt expectedTxt/expectedDB100Name.txt
+
+test15: pa09
+	$(VALGRIND) ./pa09 databaseBinary.bin -a sortDB100age.bin >output.txt
+	diff output.txt expectedTxt/expectedDB100Age.txt
+
 clean:
 	/bin/rm -f pa09.o pa09 main.o read_write.o

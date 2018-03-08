@@ -6,6 +6,7 @@
 #define MAX_LEN 80
 
 
+<<<<<<< HEAD
 #ifndef TEST_CONNECT
 StudentDatabase * Connect(char * filename) 
 {
@@ -78,6 +79,15 @@ void Close(StudentDatabase * studb)
 	free(studb);
 	
 }
+=======
+
+#ifndef TEST_CONNECT
+/* Define your Connect() here.*/
+#endif
+
+#ifndef TEST_CLOSE
+/* Define your Close() here.*/
+>>>>>>> c34ef714a7b81c6afc321dae5780d9f873c7b5ad
 #endif
 
 #ifndef TEST_CONSRUCT

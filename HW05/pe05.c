@@ -18,6 +18,7 @@ static int CompareByName(const void * s1, const void * s2)
 #endif
 
 #ifndef TEST_NAME
+<<<<<<< HEAD
 void SortDatabaseByName(StudentDatabase * studb) 
 {
 	int stunum = 0;
@@ -26,6 +27,10 @@ void SortDatabaseByName(StudentDatabase * studb)
 	stusize = sizeof(Student *);
 	qsort(studb->students, stunum, stusize, CompareByName);// use qsort to sort the database.
 	
+=======
+void SortDatabaseByName(StudentDatabase * db) {
+	// use qsort to sort the database.
+>>>>>>> c34ef714a7b81c6afc321dae5780d9f873c7b5ad
 }
 #endif
 
@@ -44,6 +49,7 @@ static int CompareByAge(const void * s1, const void * s2)
 #endif
 
 #ifndef TEST_AGE
+<<<<<<< HEAD
 void SortDatabaseByAge(StudentDatabase * studb) 
 {
 	int stunum = 0;
@@ -51,6 +57,10 @@ void SortDatabaseByAge(StudentDatabase * studb)
 	stunum = studb->number;
 	stusize = sizeof(Student *);
 	qsort(studb->students, stunum, stusize, CompareByAge);// use qsort to sort the database.
+=======
+void SortDatabaseByAge(StudentDatabase * db) {
+	// use qsort to sort the database.
+>>>>>>> c34ef714a7b81c6afc321dae5780d9f873c7b5ad
 
 }
 #endif
