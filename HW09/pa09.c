@@ -91,12 +91,12 @@ int Partition(Student** stuArray, int start, int end , CompareFunction compare)
 	// Repeat till left<=right
 	while(low <= high)
 	{
-		while((compare(&stuArray[low],  &pivot) > 0) && (low < end))
+		while(((low < end) && compare(&stuArray[low],  &pivot) > 0))
 		{
 	 	 low ++;
 		}
 	
-		while((compare(&stuArray[high], &pivot) < 0) && (start <= high))
+		while(((start <= high) && compare(&stuArray[high], &pivot) < 0) )
 		{
 		  high --;
 		}
