@@ -76,7 +76,9 @@ int WriteDatabase(char *filename, StudentDatabase * db)
 	
 	if(fptr == NULL)//Fail to open file
 	{
+	  
 	  printf("Fail to open a file\n");
+	  fclose(fptr);
 	  return 0;
 	}
 	
@@ -86,7 +88,7 @@ int WriteDatabase(char *filename, StudentDatabase * db)
 		//TODO 2. check if the StudentDatabase is not null
 		if(db == NULL)//Database is empty
 		{
-	 	  printf("Empty database\n");
+	 	  //printf("Empty database\n");
 	 	  fclose(fptr);
 	 	  return 0;
 		}
