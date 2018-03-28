@@ -16,13 +16,17 @@ void print(struct node** head)
   {
 		while(h != NULL)
 		{
-	 	 printf("%d", h->value);
-	 	 h = h->next;
-	 	 if(h != NULL)
-	 	 {
-	 	   printf(",");
-	 	 }
-		}
+	 		printf("%d", h->value);
+	 	 	h = h->next;
+	 	 	if(h != NULL)
+	 	 	{
+	 	 	  printf(",");
+	 	 	}
+	 	 	else
+	 	 	{
+	 	  	printf("\n");
+	 	 	}	
+	  }
 	}
 }
 #endif
@@ -30,43 +34,49 @@ void print(struct node** head)
 #ifndef INSF
 void insertFirst(struct node** head,struct node * n)
 {
-  struct node * h = *(head);
   
   if(n != NULL)
   {
-    n->next = h;
+    n->next = *(head);
+		*(head) = n;
 	}
-	h = n;
 }
 #endif
 
 #ifndef INSA
 void insertAt(struct node** head,struct node * n,int index)
 {
-	int count = 0;
 	struct node * h = *(head);
-	struct node * orgnext;
+	struct node * orglast = NULL;
+	int count = 0;
 	
-	if(n != NULL)
+	if(n != NULL && h != NULL)
 	{
-		while(count != index)
+		if(index == 0)
 		{
-		  if(h != NULL)
-		  {
+		  insertFirst(head, n);
+		}
+		else if(index <= getLength(head) && index >= 0)
+		{
+			while(h != NULL && count != index)
+			{
+		  	orglast = h;
 				h = h->next;
-				count ++;
+				count ++;		
 			}
-		}
+			if(count == index)
+			{	
+				orglast->next = n;
+				n->next = h;
+			}
+		}		
 		
-		if(h->next == NULL)
+	}
+	else if(h == NULL)
+	{
+		if(index == 0)
 		{
-			h->next = n;
-		}
-		else
-		{
-		  orgnext = h->next;
-		  h->next = n;
-		  n->next = orgnext;
+			insertFirst(head, n);
 		}
 	}
 	
@@ -76,15 +86,20 @@ void insertAt(struct node** head,struct node * n,int index)
 #ifndef INSL
 void insertLast(struct node** head,struct node *n)
 {
-	struct node * h = *(head);
-	if(n != NULL)
+  struct node * h = *(head);
+	if(n != NULL && h != NULL)
 	{
-	  while(h != NULL)
+	  while(h->next != NULL)
 	  {
 	  	h = h->next;
 	  }
 	  h->next = n;
 	  n->next = NULL;
+	}
+	else if(h == NULL)
+	{
+		n->next = NULL;
+		*(head) = n;
 	}
 	
 }
@@ -94,23 +109,28 @@ void insertLast(struct node** head,struct node *n)
 void deleteFirstMatch(struct node**head,int value)
 {
 	struct node * h = *(head);
-	struct node * orglast;
-	struct node * orgnext;
+	struct node * orglast = NULL;
+	
+	if(h != NULL && h->value == value)
+	{
+		*(head) = h->next;
+		free(h);
+		return;
+	}
+		
+	while(h != NULL && h->value != value)
+	{
+		orglast = h;
+		h = h->next;
+
+	}
 	
 	if(h != NULL)
 	{
-  	while((h->value) != value)
-  	{
-  	  if(h != NULL)
-  	  {
-  	    orglast = h;
-  			h = h->next;
-  			orgnext = h->next;
-  		}
-  	}
-  	orglast->next = orgnext;
-  	free(h);
-  }
+		orglast->next = h->next;
+		free(h);
+	}
+
 	
 }
 #endif
@@ -120,27 +140,28 @@ void deleteAt(struct node** head,int index)
 {
 	int count = 0;
 	struct node * h = *(head);
-	struct node * orglast;
-	struct node * orgnext;
+	struct node * orglast = NULL;
 	
-	if(h != NULL)
+	if(index == 0)
 	{
-		while(count != index)
-		{
-			if(h != NULL)
-			{
-				orglast = h;
-				h = h->next;
-				orgnext = h->next;
-				count ++;
-			}
-		}
-		
-		orglast->next = orgnext;
+		*(head) = h->next;
 		free(h);
-		
+		return;
 	}
 	
+	while(h != NULL && (count < index ))
+	{
+		orglast = h;
+		h = h->next;
+		count ++;
+	}
+		
+	if(h != NULL)
+	{
+		orglast->next = h->next;
+		free(h);
+	}
+		
 }
 #endif
 
@@ -148,21 +169,28 @@ void deleteAt(struct node** head,int index)
 void deleteAllMatches(struct node** head,int value)
 {
 	struct node * h = *(head);
-	struct node * orglast;
-	struct node * orgnext;
+	struct node * temp = NULL;
 	
+	while(h != NULL && h->value == value)
+	{
+		*(head) = h->next;		
+		free(h);
+		h = *(head);
+		
+	}		
+		
 	while(h != NULL)
 	{
-		orglast = h;
+		temp = h;
 		h = h->next;
-		orgnext = h->next;
-		if(h->value == value)
+						
+		if(h != NULL && h->value == value)
 		{
-		  orglast->next = orgnext;
-		  free(h);
-		}
+			temp->next = h->next;
+			free(h);
+			h = temp;
+		}			
 	}
-
 }
 #endif
 
@@ -170,14 +198,22 @@ void deleteAllMatches(struct node** head,int value)
 int getLength(struct node** head)
 {
 	struct node * h = *(head);
-	int count = 0;
-	while(h != NULL)
+	if(h != NULL)
 	{
-	  count++;
-	  h = h->next;
+		int count = 0;
+		while(h != NULL)
+		{
+	  	count++;
+	  	h = h->next;
+		}
+	
+		return count;
 	}
 	
-	return count;
+	else
+	{
+		return 0;
+	}
 }
 #endif
 
@@ -187,12 +223,12 @@ void freeMemory(struct node** head)
 	struct node * h = *(head);
   struct node * orglast;
   
-  while(h != NULL)
-  {
-    orglast = h;
-    h = h->next;    
-    free(orglast);
-  }
+ 	while(h != NULL)
+ 	{    	
+ 		orglast = h;
+   	h = h->next;    
+  	free(orglast);
+ 	}
 
 }
 #endif
