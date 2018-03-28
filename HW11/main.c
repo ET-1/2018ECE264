@@ -9,14 +9,13 @@ int main(int argc, char **argv)
 {
   FILE * fptr;
   char oneline[MAX_LENGTH];
-  char * space = " \n";
+  char * space = " ";
   char * token;
   int v = 0;
   int i = 0;
   int position = 0;
   
   struct node * head;
-  head = malloc(sizeof(nodeType));
   head = NULL;
   
   
@@ -58,6 +57,7 @@ int main(int argc, char **argv)
       	  struct node * n;
       	  n = malloc(sizeof(nodeType));
       	  n->value = v;
+      	  n->next = NULL;
       	  insertFirst(&head, n);
       	  print(&head);
       	  
@@ -80,6 +80,7 @@ int main(int argc, char **argv)
       	  struct node * n;
       	  n = malloc(sizeof(nodeType));   	  
       	  n->value = v;
+      	  n->next = NULL;
       	  insertLast(&head, n);
       	  print(&head);
       	}
@@ -102,12 +103,15 @@ int main(int argc, char **argv)
       	    }      	    
       	  }
       	  
-      	  struct node * n;
-      	  n = malloc(sizeof(nodeType));
-      	  n->value = v;
-      	  insertAt(&head, n, i);
-      	  print(&head);      	  
-        	  
+      	  if(i <= getLength(&head) && i >= 0)
+      	  {
+      	  	struct node * n;
+      	  	n = malloc(sizeof(nodeType));
+      	  	n->value = v;
+      	  	n->next = NULL;      	  
+      	  	insertAt(&head, n, i);
+      	  }      	  
+      	  		print(&head);        	  
       	}
       	
       	else if(strcmp(token, "delFM") == 0)//Delete the first match
@@ -160,25 +164,26 @@ int main(int argc, char **argv)
       	    }      	    
       	    
       	  }
-      	  deleteAt(&head, i);    	
-      	  print(&head);
+      	  
+      	  if(i <= (getLength(&head) - 1) && i >= 0)
+      	  {
+      	  	deleteAt(&head, i);
+
+      	  }
+      	  	print(&head);      	  
       	}
       	
       	else if(strcmp(token, "L") == 0)//Print the length of linklist
       	{
       	  int length = getLength(&head);
-      	  printf("%d", length);
+      	  printf("%d\n", length);
       	}
-      	
-/*      	else
-      	{
-      	  return EXIT_FAILURE;
-      	}
-*/      	
+      	  	
       }
     }
     
-  }    	
+  }
+  fclose(fptr);    	
 	freeMemory(&head);
 	return EXIT_SUCCESS;
 }
