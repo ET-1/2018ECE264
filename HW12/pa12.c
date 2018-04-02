@@ -10,6 +10,37 @@
 //For example, if the singly linkedlist length is 4, the values of the nodes will be 0 1 2 3
 void init(struct node **head,int length)
 {
+	struct node * h = *head;
+	if(h == NULL)
+	{
+		for(int idx = 0; idx < length; idx++)//Initialize a linklist with length
+		{
+			struct node * n;
+			h = *head;
+			n = malloc(sizeof(nodeType));//Allocate memory for node n
+			n->value = idx;//Set value for node n
+			n->next = NULL;
+			
+			//If h is not empty, insrt node n to the last of h
+			if(n != NULL && h != NULL)
+			{
+	  		while(h->next != NULL)
+	  		{
+	  			h = h->next;
+	  		}
+	  		
+	  		h->next = n;
+	  		n->next = NULL;
+			}
+			
+			//If h is empty, insrt node n to the first
+			else if(h == NULL)
+			{
+				n->next = NULL;
+				*(head) = n;
+			}
+		}
+	}
 	
 
 }
@@ -20,12 +51,26 @@ void init(struct node **head,int length)
 //This function will print the values of the nodes within the singly linkedlist.
 //For example, if the values of the nodes within the singly linkedlist are 1 5 6 8 9 10, this function will print 1,5,6,8,9,10
 //Note: there is no extra comma nor at the beginning nor at the end.
-void print(struct node **head)
+void print(struct node** head)
 {
-
+	struct node * h = *head;
 	
-
-
+	//while h is not the last node, print the value of node and go to the next node  
+	while(h != NULL)
+	{
+	 	printf("%d", h->value);
+	 	h = h->next;
+	 	
+	 	//If h is not the node before the last node, print "comma". 
+	 	if(h != NULL)
+	 	{
+	 	 	printf(",");
+	 	}
+	 	else
+	 	{
+	 		printf("\n");
+	 	}
+	}
 }
 #endif
 
@@ -37,7 +82,76 @@ void print(struct node **head)
 //This function will solve the josephus problem using the singly linkedlist.
 void josp(struct node ** head,int k,int p,int length)
 {
+	init(head, length);
+	int remain = length;
+	int count = 0;
+	struct node * temp = NULL;
+	struct node * h = *head;
+		
+	//If there are more than one node in the linklist, go to the loop	
+	while(remain > 1)
+	{
+		count = 0;//Initialize the count 
+		
+		while(count < (k + 1))
+		{
+			//If h is the last node, go to the head of the linklist
+			if(h == NULL)
+			{
+				h = *head;
+			}
+			
+			//If count equals skip number.
+			if(count == k)
+			{
+			
+				//If the node is not the first node, connect the tail of last node and head of next node				
+				if(temp->next != NULL)
+				{
+					temp->next = h->next;
+					free(h);
+					h = temp->next;
+					remain --;
+					count ++;
+				}
+				
+				//If the node is the first node, remove the first node. Repoint to the head node 
+				else
+				{
+					*head = h->next;
+					free(h);
+					h = *head;
+					remain --;
+					count ++;
+				}
+			}
+			//If count not equal skip number, go to next node, count ++ 
+			else
+			{
+				count ++;
+				temp = h;
+				h = h->next;
+				
+			}
+		}
+		
+		//If remain number can be divided by p, print the linklist 
+		if(remain % p == 0)
+		{
+			print(head);
+		}
+	}
 	
+	//Free the linklist
+	h = *(head);
+  struct node * orglast = NULL;
+  
+ 	while(h != NULL)
+ 	{    	
+ 		orglast = h;
+   	h = h->next;    
+  	free(orglast);
+ 	}
 
 	
 
