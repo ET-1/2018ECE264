@@ -32,7 +32,7 @@ TreeNode * TreeMerge(TreeNode * treeNode1, TreeNode * treeNode2)
 	TreeNode * tn = malloc(sizeof(TreeNode));
 	tn->left = treeNode1;
 	tn->right = treeNode2;
-	tn->data = 0;
+	tn->data = HUFF_ELEM;
 	tn->freq = treeNode1->freq + treeNode2->freq;
 	return tn;
 }
@@ -53,13 +53,10 @@ void PrefixTreePrint(TreeNode *treeNode, int level)
 	
 	TreeNode * lc = treeNode->left;
 	TreeNode * rc = treeNode->right;
+	PrintSingleHelper(treeNode);
 	PrefixTreePrint(lc, level);
 	PrefixTreePrint(rc, level);
-	
-	if((lc == NULL) && (rc == NULL))
-	{
-		PrintSingleHelper(treeNode);
-	}
+
 	
 	return;
 }
