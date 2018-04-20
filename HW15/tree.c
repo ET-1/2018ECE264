@@ -21,7 +21,6 @@ char * UnSig2Bin(unsigned char value)
 		bin[idx - 1] = digit[remainder];
 	}
 	
-	bin[NUM_BITS] = '\0';
 	
 	return bin;
 }
@@ -29,16 +28,132 @@ char * UnSig2Bin(unsigned char value)
 #endif
 
 #ifndef WRITE_BINARY
+//Write a byte to the file
+int writeBit(FILE * fptr, unsigned char bit, unsigned char * whichbit, unsigned char * curbyte)
+{
+	if((*whichbit) == 0)
+	{
+		//reset
+		*curbyte = 0;
+	}
+	
+	//shift the bit to the correct location
+	unsigned char temp = bit << (7 - (*whichbit));
+	* curbyte |= temp;//store the data
+	int value = 0;
+	
+	//Write current byte if there are 8 bits
+	if((* whichbit) == 7)
+	{
+		int ret;
+		ret = fwrite(curbyte, sizeof(unsigned char), 1, fptr);
+		
+		if(ret == 1)
+		{
+			value = 1;
+		}
+		else
+		{
+			value = -1;
+		}
+	}
+	
+	* whichbit = ((* whichbit) + 1) % 8;
+	return value;
+	
+}
+
+static void Tree_headerHelper(TreeNode * root, FILE *outptr, unsigned char * whichbit, unsigned char * curbyte)
+{
+	//End of tree
+	if(root == NULL)
+	{
+		return;
+	}
+	
+	TreeNode * lc = root->leftChild;
+	TreeNode * rc = root->rightChild;
+	
+	
+	//Root is a leaf node
+	if((lc == NULL) && (rc == NULL))
+	{
+
+		int write_flag = writeBit(outptr, 1, whichbit, curbyte);
+				
+		//Get convert char from root->data
+		char * convert =  UnSig2Bin(root->data); 
+		
+		//Write convert char to file
+		for(int idx = 0; idx < NUM_BITS; idx ++)
+		{
+			write_flag = writeBit(outptr, (convert[idx] - 48), whichbit, curbyte);
+
+	
+		}
+		
+
+		
+		//Free malloc of convert
+		free(convert);
+		return;
+	}
+	
+	//Preorder traversal
+	writeBit(outptr, 0, whichbit, curbyte);
+	Tree_headerHelper(lc, outptr, whichbit, curbyte);
+	Tree_headerHelper(rc, outptr, whichbit, curbyte);
+			
+}
+
+
+
 
 // WriteInOrderBinary takes root and file * as input
 // and creates binary representation of the tree as specified in the example
-int WritePreOrderBinary(TreeNode * root, FILE *outptr){
+int WritePreOrderBinary(TreeNode * root, FILE *outptr)
+{
+	unsigned char whichbit = 0;
+	unsigned char curbyte = 0;
+
+	Tree_headerHelper(root, outptr, &whichbit, &curbyte);
+	
+	//Pad '0' to the end of bin
+	writeBit(outptr, 0, &whichbit, &curbyte);
+	//Insert zero if the current byte has unused bits
+	while ( whichbit != 0)
+	{
+		writeBit(outptr, 0, &whichbit, &curbyte);
+	}
+	
+	//Add newline at the end
+	//unsigned char newline = '\n';
+	//fwrite(&newline, sizeof(unsigned char), 1, outptr);
+	
   return EXIT_SUCCESS;
 }
 
-int CreateBinaryFromTree(TreeNode * root, const char *outfile){
+int CreateBinaryFromTree(TreeNode * root, const char *outfile)
+{
+	int ret;
+	FILE * outptr = fopen(outfile, "wb");
+	
+	if(outptr == NULL)
+	{
+		return EXIT_FAILURE;
+	}
+	ret = WritePreOrderBinary(root, outptr);
+	
+	if(ret != EXIT_SUCCESS)
+	{
+		printf("Fail to write preorder binary\n");
+		return EXIT_FAILURE;
+	}
+	
+	fclose(outptr);
   return ret;
 }
+
 
 #endif
 
