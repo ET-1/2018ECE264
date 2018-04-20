@@ -2,11 +2,28 @@
 
 #ifndef USIGN_TO_BIN
 // function to create binary values from the input char values
-char * UnSig2Bin(unsigned char value) {
-    // determine the number of bits needed ("sizeof" returns bytes)
+char * UnSig2Bin(unsigned char value) 
+{
+   // determine the number of bits needed ("sizeof" returns bytes)
 	// create mask which you would use for the getting each bit value
 	// for loop to mast values and creating char array of bits
-    
+  char * bin = NULL;
+  bin = malloc(sizeof(char) * NUM_BITS);
+  
+  int base = 2;
+  char digit[3] = "01";
+  int remainder = 0;
+
+  for(int idx = NUM_BITS; idx > 0; idx--)
+	{
+		remainder = value % base;
+		value = value / base;
+		bin[idx - 1] = digit[remainder];
+	}
+	
+	bin[NUM_BITS] = '\0';
+	
+	return bin;
 }
 
 #endif
@@ -31,7 +48,15 @@ int CreateBinaryFromTree(TreeNode * root, const char *outfile){
 
 #ifndef CLEAN_TREE
 
-void CleanTree(TreeNode * root){
+void CleanTree(TreeNode * root)
+{
+	if(root == NULL)
+	{
+		return;
+	}
+	CleanTree(root->leftChild);
+	CleanTree(root->rightChild);
+	free(root);
 }
 #endif
 
